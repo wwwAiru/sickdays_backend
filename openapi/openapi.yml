@@ -1,0 +1,316 @@
+openapi: 3.0.3
+
+info:
+  version: 0.0.1
+  title: SickDays Backend OpenApi - V3
+  description: Описание api микросервиса для больничных
+  contact:
+    email: MVinnikov@egartech.ru
+
+tags:
+  - name: sickDay
+
+paths:
+  /sickdays:
+    get:
+      tags:
+        - sickDay
+      summary: получение информации о больничных работника
+      description: получение информации о больничных работника по ids больничных
+      operationId: getSickDayByIds
+      parameters:
+        - name: ids
+          in: query
+          description: ids больничных
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: больничные были успешно найдены
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/SickDayTask'
+    post:
+      tags:
+        - sickDay
+      summary: создание нового больничного
+      description: создание нового больничного для работника
+      operationId: addSickDay
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SickDayTask'
+        required: true
+      responses:
+        '201':
+          description: больничный был успешно создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SickDayTask'
+        '500':
+          description: больничный не смог создаться
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorMessage'
+
+  /sickdays/{id}:
+    get:
+      tags:
+        - sickDay
+      summary: получение информации о больничном работника
+      description: получение информации о больничном работника по id больничного
+      operationId: getSickDayById
+      parameters:
+        - name: id
+          in: path
+          description: id больничного
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: больничный был успешно найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SickDayTask'
+        '404':
+          description: id больничного не был найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorMessage'
+    put:
+      tags:
+        - sickDay
+      summary: обновление существующего больничного
+      description: обновление существующего больничного по его id
+      operationId: updateSickDayById
+      parameters:
+        - name: id
+          in: path
+          description: id больничного
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SickDayTask'
+        required: true
+      responses:
+        '200':
+          description: больничный был успешно обновлен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SickDayTask'
+        '404':
+          description: id сотрудника не было найдено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorMessage'
+        '500':
+          description: больничный не смог обновиться
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorMessage'
+
+  /sickdays/remain:
+    get:
+      tags:
+        - sickDay
+      summary: получение информации о оставшихся sick day
+      description: получение информации о оставшихся sick day по ids больничных
+      operationId: getRemainSickDaysByIds
+      parameters:
+        - name: ids
+          in: query
+          description: IDs больничных
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: branch
+          in: query
+          description: филиал больничного
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: информация об оставшихся sick days была успешно найдена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SickDayRemain'
+        '404':
+          description: больничный не был найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorMessage'
+
+  /sickdays/remain/{egar_id}:
+    get:
+      tags:
+        - sickDay
+      summary: получение информации о оставшихся sick day
+      description: получение информации о оставшихся sick day работника по его корпоративному id
+      operationId: getRemainSickDaysByEgarId
+      parameters:
+        - name: egar_id
+          in: path
+          description: EGAR id сотрудника
+          required: true
+          schema:
+            type: string
+        - name: list_id
+          in: query
+          description: list id, где находиться карточка сотрудника.
+            Если параметр не передается, то сотрудник ищется в трех списках.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: информация об оставшихся sick days была успешно найдена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SickDayRemain'
+        '404':
+          description: EGAR id сотрудника не было найдено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorMessage'
+
+  /sickdays/{egar_id}/{id}:
+    get:
+      tags:
+        - sickDay
+      summary: получение информации о больничном работника
+      description: получение информации о больничном работника по его EGAR id и по id больничного
+      operationId: getSickDayByIdAndEgarId
+      parameters:
+        - name: egar_id
+          in: path
+          description: EGAR id сотрудника
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: id больничного
+          required: true
+          schema:
+            type: string
+        - name: list_id
+          in: query
+          description: list id, где находиться карточка сотрудника.
+            Если параметр не передается, то сотрудник ищется в трех списках.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: больничный был успешно найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SickDayTask'
+        '404':
+          description: id сотрудника или id больничного не были найдены
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorMessage'
+
+components:
+  schemas:
+    SickDayTask:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "24df2c4a-53c1-498b-9f5d-6a6b4b04b3a1"
+        name:
+          type: string
+          example: "Больничный: Николай Игорь Алексеевич"
+        employee:
+          $ref: '#/components/schemas/EmployeeTask'
+        type:
+          type: string
+          example: "SICK_TIME"
+        status:
+          type: string
+          example: "новый"
+        sick_days_id:
+          type: array
+          items:
+            type: string
+            example: "2wmagcr"
+        assigners:
+          type: array
+          items:
+            $ref: '#/components/schemas/Assigner'
+        start_date:
+          type: string
+          example: "1662035318297"
+        end_date:
+          type: string
+          example: "1662035318297"
+
+    ApiErrorMessage:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Задача с таким id не была найдена"
+        milliseconds:
+          type: string
+          example: "1662035318297"
+        class:
+          type: string
+          example: "ru.egartech.sickday.exception.clickup.ClickUpException"
+
+    EmployeeTask:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "2a83za"
+        position:
+          type: string
+          example: "Разработчик"
+        name:
+          type: string
+          example: "Иванов Иван Иванович"
+
+    Assigner:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "42517823"
+
+    SickDayRemain:
+      type: object
+      properties:
+        branch:
+          type: string
+          example: "Пензенский"
+        sick_day_remain:
+          type: number
+          example: 2
