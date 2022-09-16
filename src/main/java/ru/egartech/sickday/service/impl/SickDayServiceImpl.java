@@ -15,9 +15,12 @@ import ru.egartech.sdk.dto.task.serialization.UpdateTaskDto;
 import ru.egartech.sdk.dto.task.serialization.customfield.request.CustomFieldRequest;
 import ru.egartech.sdk.dto.task.serialization.customfield.update.BindFieldDto;
 import ru.egartech.sickday.domain.branch.FreeSickDaysByBranchResolver;
+import ru.egartech.sickday.domain.position.PositionType;
+import ru.egartech.sickday.domain.position.SickDayListIdByPositionResolver;
 import ru.egartech.sickday.domain.remain.SickDayRemainResolver;
 import ru.egartech.sickday.domain.type.SickDayType;
 import ru.egartech.sickday.exception.SickDayApplicationException;
+import ru.egartech.sickday.exception.employee.EmployeePositionNotFoundException;
 import ru.egartech.sickday.exception.sickday.SickDayException;
 import ru.egartech.sickday.exception.sickday.SickDayNotFoundException;
 import ru.egartech.sickday.mapper.SickDayMapper;
@@ -25,7 +28,6 @@ import ru.egartech.sickday.model.AssignerDto;
 import ru.egartech.sickday.model.SickDayRemainDto;
 import ru.egartech.sickday.model.SickDayTaskDto;
 import ru.egartech.sickday.property.FieldIdsProperties;
-import ru.egartech.sickday.property.ListIdsProperties;
 import ru.egartech.sickday.service.SickDayService;
 
 import java.math.BigDecimal;
@@ -42,9 +44,9 @@ import static java.util.Objects.isNull;
 public class SickDayServiceImpl implements SickDayService {
     private final ListTaskClient listTaskClient;
     private final SickDayRemainResolver sickDayRemainResolver;
-    private final SickDayMapper sickDayMapper;
-    private final ListIdsProperties listIdsProperties;
+    private final SickDayListIdByPositionResolver sickDayListIdByPositionResolver;
     private final FieldIdsProperties fieldIdsProperties;
+    private final SickDayMapper sickDayMapper;
 
     @Override
     public List<SickDayTaskDto> getSickDayByIds(List<String> ids) {
@@ -58,7 +60,15 @@ public class SickDayServiceImpl implements SickDayService {
                 .ofName(sickDayTaskDto.getName())
                 .setStatus(sickDayTaskDto.getStatus());
 
-        TaskDto newTaskDto = listTaskClient.createTask(listIdsProperties.getDevelopersSickDaysId(), createTaskDto);
+        Integer sickDaysListByPosition = sickDayListIdByPositionResolver.getSickDaysListId(
+                Optional.ofNullable(PositionType.valueOfPosition(
+                        sickDayTaskDto
+                                .getEmployee()
+                                .getPosition()
+                                .toLowerCase()
+                )).orElseThrow(EmployeePositionNotFoundException::new)
+        );
+        TaskDto newTaskDto = listTaskClient.createTask(sickDaysListByPosition, createTaskDto);
         sickDayTaskDto.setId(newTaskDto.getId());
         log.info("Creating task with id {}", newTaskDto.getId());
 
