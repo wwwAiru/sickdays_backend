@@ -11,7 +11,6 @@ public class FieldIdsProperties {
 
     private String egarId;
     private String sickDaysId;
-    private String sickDaysStatus;
     private String sickDaysType;
     private String branchId;
     private String startDateId;
