@@ -9,8 +9,8 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 public enum SickDayType {
-    SICK_TIME(0, "больничный"),
-    SICK_DAY(1, "sick day"),
+    SICK_DAY(0, "sick day"),
+    SICK_TIME(1, "больничный"),
     ;
 
     private static final Map<String, SickDayType> BY_LABELS = new HashMap<>();
