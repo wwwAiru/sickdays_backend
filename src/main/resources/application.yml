@@ -1,7 +1,3 @@
-spring:
-  jackson:
-    default-property-inclusion: non_null
-
 server:
   port: 8100
 
@@ -16,7 +12,6 @@ clickup:
     developers-sick-days-id: 210315847
     testers-sick-days-id: 0
     analytics-sick-days-id: 0
-    sick-days-id: 210315847
   field:
     egar-id: 836c9684-0c71-4714-aff2-900b0ded0685
     sick_days-id: 7e110a3d-31c1-47b0-a269-22daaa527746
