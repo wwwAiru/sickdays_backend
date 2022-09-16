@@ -34,7 +34,7 @@ public final class MessageSourceUtils {
 
     @RequiredArgsConstructor
     public enum EmployeesExceptionMessageProperties {
-        BASE("employee.exception"),
+        BASE("employees.exception"),
         NOT_FOUND(BASE.getName().concat(".not-found")),
         BRANCH_NOT_FOUND(BASE.getName().concat(".not-found-branch")),
         ;
