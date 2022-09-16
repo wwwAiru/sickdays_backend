@@ -9,10 +9,8 @@ import ru.egartech.sdk.dto.task.deserialization.customfield.field.relationship.R
 import ru.egartech.sdk.dto.task.deserialization.customfield.field.relationship.RelationshipValueDto;
 import ru.egartech.sdk.dto.task.deserialization.customfield.field.text.TextFieldDto;
 import ru.egartech.sickday.domain.type.SickDayType;
-import ru.egartech.sickday.exception.sickday.SickDayDateNotFoundException;
-import ru.egartech.sickday.exception.sickday.SickDayException;
-import ru.egartech.sickday.exception.sickday.SickDayStatusNotFoundException;
-import ru.egartech.sickday.exception.sickday.SickDayTypeNotFoundException;
+import ru.egartech.sickday.exception.employee.EmployeeNotFoundException;
+import ru.egartech.sickday.exception.sickday.*;
 import ru.egartech.sickday.model.AssignerDto;
 import ru.egartech.sickday.model.EmployeeTaskDto;
 import ru.egartech.sickday.model.SickDayTaskDto;
@@ -26,13 +24,11 @@ import java.util.function.Function;
 @Component
 @RequiredArgsConstructor
 public class SickDayMapper {
-
     private final FieldIdsProperties fieldIdsProperties;
 
     public SickDayTaskDto toDto(TaskDto sickDayTask) {
         return buildSickDayTaskDto(sickDayTask);
     }
-
 
     public SickDayTaskDto toDto(RelationshipValueDto sickDay,
                                 Function<String, TaskDto> taskDtoFunction) {
@@ -85,12 +81,9 @@ public class SickDayMapper {
     }
 
     private String getSickDayStatus(TaskDto sickDayTask) {
-        DropdownOption sickDayStatusOption = Optional.ofNullable(sickDayTask
-                .<DropdownFieldDto>customField(fieldIdsProperties.getSickDaysStatus())
-                .getValue()
-        ).orElseThrow(SickDayStatusNotFoundException::new);
-
-        return sickDayStatusOption.getName();
+        return sickDayTask
+                .getStatus()
+                .getStatus();
     }
 
     private String getSickDayDate(TaskDto sickDayTask, String dateFieldId) {
@@ -104,7 +97,7 @@ public class SickDayMapper {
     private RelationshipFieldDto getEmployeeRelationshipFromSickDayTask(TaskDto sickDayTask) {
         return Optional.ofNullable(sickDayTask
                 .<RelationshipFieldDto>customField(fieldIdsProperties.getSickDaysId())
-        ).orElseThrow(SickDayStatusNotFoundException::new);
+        ).orElseThrow(EmployeeNotFoundException::new);
     }
 
     private RelationshipValueDto getEmployeeValueFromRelationship(RelationshipFieldDto relationshipFieldDto) {
@@ -114,5 +107,4 @@ public class SickDayMapper {
         }
         return value.get(0);
     }
-
 }

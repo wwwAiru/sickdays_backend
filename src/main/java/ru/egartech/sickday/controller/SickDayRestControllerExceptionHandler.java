@@ -54,14 +54,6 @@ public class SickDayRestControllerExceptionHandler {
                 .buildApiErrorMessageDto(messageSourceUtils, e, req, TYPE_NOT_FOUND.getName());
     }
 
-    @ExceptionHandler(SickDayStatusNotFoundException.class)
-    private ApiErrorMessageDto handleSickDayStatusNotFoundException(SickDayStatusNotFoundException e,
-                                                                    WebRequest req) {
-        e.printStackTrace();
-        return GlobalRestControllerExceptionHandler
-                .buildApiErrorMessageDto(messageSourceUtils, e, req, STATUS_NOT_FOUND.getName());
-    }
-
     @ExceptionHandler(SickDayCreateException.class)
     @ResponseStatus(BAD_REQUEST)
     private ApiErrorMessageDto handleSickDayCreateException(SickDayCreateException e, WebRequest req) {
