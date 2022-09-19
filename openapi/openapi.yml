@@ -244,33 +244,34 @@ components:
       properties:
         id:
           type: string
-          example: "24df2c4a-53c1-498b-9f5d-6a6b4b04b3a1"
+          example: "2wmagcr"
+          x-constraints: "@Null"
         name:
           type: string
           example: "Больничный: Николай Игорь Алексеевич"
+          x-constraints: "@NotNull"
         employee:
           $ref: '#/components/schemas/EmployeeTask'
         type:
           type: string
           example: "SICK_TIME"
+          x-constraints: "@NotNull"
         status:
           type: string
           example: "новый"
-        sick_days_id:
-          type: array
-          items:
-            type: string
-            example: "2wmagcr"
+          x-constraints: "@NotNull"
         assigners:
           type: array
           items:
-            $ref: '#/components/schemas/Assigner'
+            $ref: '#/components/schemas/SickDayAssigner'
         start_date:
           type: string
           example: "1662035318297"
+          x-constraints: "@NotNull"
         end_date:
           type: string
           example: "1662035318297"
+          x-constraints: "@NotNull"
 
     ApiErrorMessage:
       type: object
@@ -291,19 +292,19 @@ components:
         id:
           type: string
           example: "2a83za"
+          x-constraints: "@NotNull"
         position:
           type: string
           example: "Разработчик"
-        name:
-          type: string
-          example: "Иванов Иван Иванович"
+          x-constraints: "@NotNull"
 
-    Assigner:
+    SickDayAssigner:
       type: object
       properties:
         id:
           type: string
           example: "42517823"
+          x-constraints: "@NotNull"
 
     SickDayRemain:
       type: object
