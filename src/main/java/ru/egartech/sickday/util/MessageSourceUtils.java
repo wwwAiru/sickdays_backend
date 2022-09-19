@@ -21,7 +21,7 @@ public final class MessageSourceUtils {
     @RequiredArgsConstructor
     public enum SickDaysExceptionMessageProperties {
         BASE("sick-days.exception"),
-        NOT_FOUND(BASE.getName().concat(".not-found")),
+        NOT_FOUND(BASE.getName().concat(".not-found-id")),
         CREATE(BASE.getName().concat(".create")),
         DATE_NOT_FOUND(BASE.getName().concat(".not-found-date")),
         TYPE_NOT_FOUND(BASE.getName().concat(".not-found-type")),
