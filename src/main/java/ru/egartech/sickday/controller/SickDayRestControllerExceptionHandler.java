@@ -35,7 +35,7 @@ public class SickDayRestControllerExceptionHandler {
     private ApiErrorMessageDto handleSickDayNotFoundException(SickDayNotFoundException e, WebRequest req) {
         e.printStackTrace();
         return GlobalRestControllerExceptionHandler
-                .buildApiErrorMessageDto(messageSourceUtils, e, req, NOT_FOUND.getName());
+                .buildApiErrorMessageDto(messageSourceUtils, e, req, NOT_FOUND.getName(), e.getId());
     }
 
     @ExceptionHandler(SickDayDateNotFoundException.class)

@@ -21,14 +21,15 @@ public class GlobalRestControllerExceptionHandler {
     public static ApiErrorMessageDto buildApiErrorMessageDto(MessageSourceUtils messageSourceUtils,
                                                              RuntimeException e,
                                                              WebRequest webRequest,
-                                                             String srcToMessageSource) {
+                                                             String srcToMessageSource,
+                                                             Object... args) {
         return ApiErrorMessageDto.builder()
                 .milliseconds(String.valueOf(new Date().getTime()))
                 .propertyClass(e.getClass().getSimpleName())
                 .message(messageSourceUtils.buildMessage(
                         srcToMessageSource,
                         webRequest,
-                        e.getClass().getSimpleName())
+                        args)
                 )
                 .build();
     }
