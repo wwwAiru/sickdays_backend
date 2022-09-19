@@ -1,6 +1,13 @@
 package ru.egartech.sickday.exception.sickday;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class SickDayNotFoundException extends SickDayException {
+    protected String id;
+
     public SickDayNotFoundException() {
         super();
     }
