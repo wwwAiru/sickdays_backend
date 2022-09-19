@@ -3,16 +3,20 @@ package ru.egartech.sickday.mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.egartech.sdk.dto.task.deserialization.TaskDto;
+import ru.egartech.sdk.dto.task.deserialization.customfield.assigner.AssignerDto;
 import ru.egartech.sdk.dto.task.deserialization.customfield.field.dropdown.DropdownFieldDto;
 import ru.egartech.sdk.dto.task.deserialization.customfield.field.dropdown.DropdownOption;
 import ru.egartech.sdk.dto.task.deserialization.customfield.field.relationship.RelationshipFieldDto;
 import ru.egartech.sdk.dto.task.deserialization.customfield.field.relationship.RelationshipValueDto;
 import ru.egartech.sdk.dto.task.deserialization.customfield.field.text.TextFieldDto;
+import ru.egartech.sdk.dto.task.deserialization.list.ListDto;
+import ru.egartech.sdk.dto.task.deserialization.status.StatusDto;
 import ru.egartech.sickday.domain.type.SickDayType;
 import ru.egartech.sickday.exception.employee.EmployeeNotFoundException;
-import ru.egartech.sickday.exception.sickday.*;
-import ru.egartech.sickday.model.AssignerDto;
+import ru.egartech.sickday.exception.sickday.SickDayDateNotFoundException;
+import ru.egartech.sickday.exception.sickday.SickDayTypeNotFoundException;
 import ru.egartech.sickday.model.EmployeeTaskDto;
+import ru.egartech.sickday.model.SickDayAssignerDto;
 import ru.egartech.sickday.model.SickDayTaskDto;
 import ru.egartech.sickday.property.FieldIdsProperties;
 
@@ -20,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -36,11 +41,35 @@ public class SickDayMapper {
         return buildSickDayTaskDto(sickDayTask);
     }
 
+    public TaskDto toDto(SickDayTaskDto sickDayTaskDto) {
+        return new TaskDto(
+                sickDayTaskDto.getId(),
+                sickDayTaskDto.getName(),
+                new StatusDto(null, sickDayTaskDto.getStatus(), null),
+                null,
+                sickDayTaskDto.getAssigners()
+                        .stream()
+                        .map(a -> AssignerDto.builder()
+                                .id(a.getId())
+                                .build())
+                        .collect(Collectors.toList()),
+                new ListDto(),
+                null
+        );
+    }
+
+    public List<SickDayTaskDto> toListDto(List<TaskDto> taskDtos) {
+        return taskDtos
+                .stream()
+                .map(this::toDto)
+                .toList();
+    }
+
     public List<SickDayTaskDto> toListDto(List<RelationshipValueDto> sickDays,
                                           Function<String, TaskDto> taskDtoFunction) {
-        List<SickDayTaskDto> SickDayTaskDtos = new ArrayList<>();
-        sickDays.forEach(sickDay -> SickDayTaskDtos.add(toDto(sickDay, taskDtoFunction)));
-        return SickDayTaskDtos;
+        List<SickDayTaskDto> taskDtos = new ArrayList<>();
+        sickDays.forEach(sickDay -> taskDtos.add(toDto(sickDay, taskDtoFunction)));
+        return taskDtos;
     }
 
     private SickDayTaskDto buildSickDayTaskDto(TaskDto sickDayTask) {
@@ -51,7 +80,6 @@ public class SickDayMapper {
                 .name(sickDayTask.getName())
                 .employee(EmployeeTaskDto.builder()
                         .id(getEmployeeValueFromRelationship(employeeRelationship).getId())
-                        .name(getEmployeeValueFromRelationship(employeeRelationship).getName())
                         .build())
                 .status(getSickDayStatus(sickDayTask))
                 .type(getSickDayType(sickDayTask))
@@ -61,9 +89,9 @@ public class SickDayMapper {
                 .build();
     }
 
-    private List<AssignerDto> getAssigners(List<ru.egartech.sdk.dto.task.deserialization.customfield.assigner.AssignerDto> assignerDtos) {
-        List<AssignerDto> assigners = new ArrayList<>();
-        assignerDtos.forEach(assignerDto -> assigners.add(AssignerDto.builder()
+    private List<SickDayAssignerDto> getAssigners(List<AssignerDto> assignerDtos) {
+        List<SickDayAssignerDto> assigners = new ArrayList<>();
+        assignerDtos.forEach(assignerDto -> assigners.add(SickDayAssignerDto.builder()
                 .id(assignerDto.getId())
                 .build()
         ));
@@ -103,7 +131,7 @@ public class SickDayMapper {
     private RelationshipValueDto getEmployeeValueFromRelationship(RelationshipFieldDto relationshipFieldDto) {
         List<RelationshipValueDto> value = relationshipFieldDto.getValue();
         if (value.size() != 1) {
-            throw new SickDayException();
+            throw new EmployeeNotFoundException();
         }
         return value.get(0);
     }
