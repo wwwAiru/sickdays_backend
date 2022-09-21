@@ -11,9 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import ru.egartech.sdk.dto.task.deserialization.TaskDto;
 import ru.egartech.sdk.dto.task.deserialization.customfield.field.relationship.RelationshipFieldDto;
 import ru.egartech.sickday.AbstractSpringContextClass;
-import ru.egartech.sickday.config.ObjectMapperTestConfig;
 import ru.egartech.sickday.config.PropertiesTestConfig;
-import ru.egartech.sickday.config.SickDayMapperTestConfig;
 import ru.egartech.sickday.domain.type.SickDayType;
 import ru.egartech.sickday.exception.employee.EmployeeNotFoundException;
 import ru.egartech.sickday.exception.sickday.SickDayDateNotFoundException;
@@ -31,8 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ContextConfiguration(classes = {
-        SickDayMapperTestConfig.class,
-        ObjectMapperTestConfig.class,
+        ObjectMapper.class,
         PropertiesTestConfig.class,
 })
 @DisplayName("Тестирование маппера")

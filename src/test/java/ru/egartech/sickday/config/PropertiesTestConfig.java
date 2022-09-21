@@ -12,8 +12,6 @@ import ru.egartech.sickday.property.ListIdsProperties;
         ListIdsProperties.class,
 })
 @EnableConfigurationProperties({
-        FieldIdsProperties.class,
-        ListIdsProperties.class,
         FileNamesProperties.class,
 })
 public class PropertiesTestConfig {

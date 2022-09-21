@@ -13,10 +13,10 @@ import ru.egartech.sickday.service.impl.SickDayServiceImpl;
 
 @ContextConfiguration(classes = {
         TaskRepositoryImpl.class,
-        PropertiesTestConfig.class,
         SickDayRemainResolver.class,
+        PropertiesTestConfig.class,
         SickDayListIdByPositionResolver.class,
-        SickDayMapperTestConfig.class,
+        SickDayMapper.class,
 })
 public class SickDayServiceImplTestConfig extends AbstractBaseConfig {
     @Bean
