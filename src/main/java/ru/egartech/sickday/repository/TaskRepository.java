@@ -3,8 +3,9 @@ package ru.egartech.sickday.repository;
 import org.springframework.stereotype.Repository;
 import ru.egartech.sdk.dto.task.deserialization.TaskDto;
 import ru.egartech.sdk.dto.task.deserialization.TasksDto;
+import ru.egartech.sdk.dto.task.serialization.CreateTaskDto;
+import ru.egartech.sdk.dto.task.serialization.UpdateTaskDto;
 import ru.egartech.sdk.dto.task.serialization.customfield.request.CustomFieldRequest;
-import ru.egartech.sdk.dto.task.serialization.customfield.update.BindFieldDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,9 +21,9 @@ public interface TaskRepository {
 
     List<TasksDto> findTasksByCustomFields(CustomFieldRequest<?>... customFieldRequest);
 
-    // clickup создаёт указанное id для таски, только если есть спец. план
-    TaskDto create(Integer listId, TaskDto taskDto);
+    // clickup создаёт указанное id у таски, только если есть спец. план
+    TaskDto create(Integer listId, CreateTaskDto createTaskDto);
 
-    TaskDto update(TaskDto taskDto, BindFieldDto... bindFieldDtos);
+    TaskDto update(UpdateTaskDto updateTaskDto);
 
 }
