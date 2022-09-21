@@ -1,0 +1,387 @@
+{
+  "id": "2zfy982",
+  "custom_id": null,
+  "name": "Больничный: Николай Игорь Алексеевич 15.09.2022",
+  "text_content": null,
+  "description": null,
+  "status": {
+    "id": "c102323668_c25785084_U1RZbTsG",
+    "status": "новый",
+    "color": "#d3d3d3",
+    "orderindex": 0,
+    "type": "open"
+  },
+  "orderindex": "54200.00000000000000000000000000000000",
+  "date_created": "1663596753165",
+  "date_updated": "1663596761137",
+  "date_closed": null,
+  "archived": false,
+  "creator": {
+    "id": 42517823,
+    "username": "Винников Максим",
+    "color": "#2ea52c",
+    "email": "mvinnikov@egartech.ru",
+    "profilePicture": "https://attachments.clickup.com/profilePictures/42517823_oko.jpg"
+  },
+  "assignees": [
+    {
+      "id": 42517823,
+      "username": "Винников Максим",
+      "color": "#2ea52c",
+      "initials": "ВМ",
+      "email": "mvinnikov@egartech.ru",
+      "profilePicture": "https://attachments.clickup.com/profilePictures/42517823_oko.jpg"
+    }
+  ],
+  "watchers": [
+    {
+      "id": 42517823,
+      "username": "Винников Максим",
+      "color": "#2ea52c",
+      "initials": "ВМ",
+      "email": "mvinnikov@egartech.ru",
+      "profilePicture": "https://attachments.clickup.com/profilePictures/42517823_oko.jpg"
+    }
+  ],
+  "checklists": [],
+  "tags": [],
+  "parent": null,
+  "priority": null,
+  "due_date": null,
+  "start_date": null,
+  "points": null,
+  "time_estimate": null,
+  "time_spent": 0,
+  "custom_fields": [
+    {
+      "id": "7e110a3d-31c1-47b0-a269-22daaa527746",
+      "name": "ЦКР / Сотрудники / Разработчики",
+      "type": "list_relationship",
+      "type_config": {
+        "fields": [
+          {
+            "name": "Status",
+            "field": "status",
+            "width": 100,
+            "hidden": false
+          }
+        ],
+        "subcategory_id": "180311895",
+        "linked_subcategory_access": true,
+        "subcategory_inverted_name": "ЦКР / Сотрудники / Разработчики"
+      },
+      "date_created": "1661769525245",
+      "hide_from_guests": false,
+      "value": [
+        {
+          "id": "2rgq20y",
+          "name": "Сотрудник: Николаев Игорь Алексеевич",
+          "status": "в работе",
+          "color": "#0231E8",
+          "custom_type": null,
+          "team_id": "4597045",
+          "deleted": false,
+          "url": "https://app.clickup.com/t/2rgq20y",
+          "access": true
+        }
+      ],
+      "required": false
+    },
+    {
+      "id": "e8430d2b-d443-4c2d-addc-cab56324fc29",
+      "name": "Тип больничного",
+      "type": "drop_down",
+      "type_config": {
+        "default": 0,
+        "placeholder": null,
+        "options": [
+          {
+            "id": "e7f436b0-7e11-4dc0-8aa3-60fca88d7855",
+            "name": "Sick day",
+            "color": null,
+            "orderindex": 0
+          },
+          {
+            "id": "52e8aa45-9583-4acb-a56a-3dd074ffecd3",
+            "name": "Больничный",
+            "color": null,
+            "orderindex": 1
+          }
+        ]
+      },
+      "date_created": "1661769999700",
+      "hide_from_guests": false,
+      "value": 0,
+      "required": false
+    },
+    {
+      "id": "adc61b90-377a-49c0-8e14-a6450d685a81",
+      "name": "010 Тип задачи",
+      "type": "drop_down",
+      "type_config": {
+        "new_drop_down": true,
+        "options": [
+          {
+            "id": "a460492a-2600-4699-8cd7-ac91f47403ac",
+            "name": "Встреча",
+            "color": null,
+            "orderindex": 0
+          },
+          {
+            "id": "38823f41-d71a-4a0b-8905-9396028497f6",
+            "name": "Программа",
+            "color": null,
+            "orderindex": 1
+          },
+          {
+            "id": "5c9b5585-130b-4e04-aec2-d868337a80ac",
+            "name": "Проект",
+            "color": null,
+            "orderindex": 2
+          },
+          {
+            "id": "f5ae8bf5-1251-48f2-baae-94c4b2024789",
+            "name": "Подпроект",
+            "color": null,
+            "orderindex": 3
+          },
+          {
+            "id": "f471177c-9fc3-43f7-a819-889243b1a2a4",
+            "name": "Этап",
+            "color": null,
+            "orderindex": 4
+          },
+          {
+            "id": "5c71439e-22cd-42e8-8102-6c2c1b9014a3",
+            "name": "Работа",
+            "color": null,
+            "orderindex": 5
+          },
+          {
+            "id": "d790e788-98a0-45bd-ab02-e419a61c61d6",
+            "name": "Веха",
+            "color": null,
+            "orderindex": 6
+          },
+          {
+            "id": "05c94e63-d14f-460c-b58b-1f45e568586c",
+            "name": "Собеседование",
+            "color": null,
+            "orderindex": 7
+          },
+          {
+            "id": "83128b6e-8868-4b67-90c1-0afa4a79f915",
+            "name": "Занятость",
+            "color": null,
+            "orderindex": 8
+          },
+          {
+            "id": "4fd6bd12-1484-4698-85da-dcbb3ef9e4c2",
+            "name": "Предложение",
+            "color": null,
+            "orderindex": 9
+          },
+          {
+            "id": "4dc5ebdc-92b6-4b61-9c1a-760037c69997",
+            "name": "Индексация",
+            "color": null,
+            "orderindex": 10
+          },
+          {
+            "id": "78ae7025-d5b8-40ec-9954-35c8543fb61a",
+            "name": "Сотрудник",
+            "color": null,
+            "orderindex": 11
+          },
+          {
+            "id": "3a319fec-e486-465b-b9b2-d94c87868b49",
+            "name": "Контакт",
+            "color": null,
+            "orderindex": 12
+          },
+          {
+            "id": "20fc972e-2e61-496b-aa70-de159dce0245",
+            "name": "Запрос",
+            "color": null,
+            "orderindex": 13
+          },
+          {
+            "id": "b9ffec27-04f5-4fd5-beab-347555fca34d",
+            "name": "Заказчик",
+            "color": null,
+            "orderindex": 14
+          },
+          {
+            "id": "b0f5e6f4-d02a-4cd6-a364-ac02521c0ed4",
+            "name": "Отпуск",
+            "color": null,
+            "orderindex": 15
+          },
+          {
+            "id": "918f54e7-0a12-4e96-993b-f8cb0412fec0",
+            "name": "Сертификация",
+            "color": null,
+            "orderindex": 16
+          },
+          {
+            "id": "70a04bcb-1a1b-492e-a002-73cc4d9ca096",
+            "name": "Грейдирование",
+            "color": null,
+            "orderindex": 17
+          },
+          {
+            "id": "315b9cdf-2ab1-477a-a1ea-295afcda7be6",
+            "name": "Кандидат",
+            "color": null,
+            "orderindex": 18
+          },
+          {
+            "id": "1390e158-d24a-4b8d-92ab-52c8453190ad",
+            "name": "Обязательство",
+            "color": null,
+            "orderindex": 19
+          },
+          {
+            "id": "944787e9-51bf-41ed-8e4d-c9e2eca686f8",
+            "name": "Опыт",
+            "color": null,
+            "orderindex": 20
+          },
+          {
+            "id": "af5f6570-25f4-4c21-81fc-3318d203da7a",
+            "name": "Сертификат",
+            "color": null,
+            "orderindex": 21
+          },
+          {
+            "id": "7a46cbe6-21d2-4601-a6ff-bd1cf08b77fa",
+            "name": "Оффер",
+            "color": null,
+            "orderindex": 22
+          },
+          {
+            "id": "65a191a9-a37d-43ec-a01a-65e93e2b94e1",
+            "name": "Bug Report",
+            "color": null,
+            "orderindex": 23
+          },
+          {
+            "id": "51ace602-9eda-41bd-a6ac-b0377ab74d72",
+            "name": "Обеспечение",
+            "color": null,
+            "orderindex": 24
+          },
+          {
+            "id": "63e80efa-d5c2-47f9-93ab-670959f6c827",
+            "name": "Грейдизация",
+            "color": null,
+            "orderindex": 25
+          },
+          {
+            "id": "973c01bc-491a-4608-95e7-ea7d6b4ce17f",
+            "name": "Тест",
+            "color": null,
+            "orderindex": 26
+          },
+          {
+            "id": "7b1a88b0-38c7-4c4d-9adc-a599c87807ab",
+            "name": "Подрядчик",
+            "color": null,
+            "orderindex": 27
+          },
+          {
+            "id": "71b8080e-0e36-43f1-bfe6-5445d5d6771a",
+            "name": "Статистика",
+            "color": "#fff",
+            "orderindex": 28
+          },
+          {
+            "id": "046f7dae-0b18-4aa6-9061-ee9c075fe946",
+            "name": "Feature",
+            "color": null,
+            "orderindex": 29
+          },
+          {
+            "id": "0708290d-c217-47ca-a86a-0cd90f327aeb",
+            "name": "HotFix",
+            "color": null,
+            "orderindex": 30
+          },
+          {
+            "id": "d5facc95-62fb-4d72-ae6d-c2c981d026a5",
+            "name": "Improvement",
+            "color": null,
+            "orderindex": 31
+          },
+          {
+            "id": "2464c2c9-20ba-45ac-9541-a26dd8dc276c",
+            "name": "Bugfix",
+            "color": null,
+            "orderindex": 32
+          },
+          {
+            "id": "33fe1578-ec28-4082-8ddd-67581abc3eeb",
+            "name": "Занять",
+            "color": "#e50000",
+            "orderindex": 33
+          },
+          {
+            "id": "d7300681-b894-43d8-b888-9e54657e2a5c",
+            "name": "Release",
+            "color": "#fff",
+            "orderindex": 34
+          }
+        ]
+      },
+      "date_created": "1611835187872",
+      "hide_from_guests": false,
+      "required": false
+    },
+    {
+      "id": "58004edd-d04c-4edb-bed8-f6337397fd72",
+      "name": "Дата начала",
+      "type": "date",
+      "type_config": {},
+      "date_created": "1618856008857",
+      "hide_from_guests": false,
+      "value": "1663117200000",
+      "required": false
+    },
+    {
+      "id": "879e67e3-eb65-45eb-9a82-94ac94470918",
+      "name": "Дата окончания",
+      "type": "date",
+      "type_config": {},
+      "date_created": "1612356203383",
+      "hide_from_guests": false,
+      "value": "1663117200000",
+      "required": false
+    }
+  ],
+  "dependencies": [],
+  "linked_tasks": [],
+  "team_id": "4597045",
+  "url": "https://app.clickup.com/t/2zfy982",
+  "permission_level": "create",
+  "list": {
+    "id": "210315847",
+    "name": "ЦКР / Сотрудники / Больничные",
+    "access": true
+  },
+  "project": {
+    "id": "102323668",
+    "name": "CUERP (DEV2)",
+    "hidden": false,
+    "access": true
+  },
+  "folder": {
+    "id": "102323668",
+    "name": "CUERP (DEV2)",
+    "hidden": false,
+    "access": true
+  },
+  "space": {
+    "id": "6857652"
+  },
+  "attachments": []
+}
