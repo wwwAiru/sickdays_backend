@@ -7,11 +7,9 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.test.context.ContextConfiguration;
 import ru.egartech.sdk.dto.task.deserialization.TaskDto;
 import ru.egartech.sdk.dto.task.deserialization.customfield.field.relationship.RelationshipFieldDto;
-import ru.egartech.sickday.AbstractSpringContextClass;
-import ru.egartech.sickday.config.PropertiesTestConfig;
+import ru.egartech.sickday.AbstractSpringContext;
 import ru.egartech.sickday.domain.type.SickDayType;
 import ru.egartech.sickday.exception.employee.EmployeeNotFoundException;
 import ru.egartech.sickday.exception.sickday.SickDayDateNotFoundException;
@@ -28,12 +26,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@ContextConfiguration(classes = {
-        ObjectMapper.class,
-        PropertiesTestConfig.class,
-})
 @DisplayName("Тестирование маппера")
-class SickDayMapperTest extends AbstractSpringContextClass {
+class SickDayMapperTest extends AbstractSpringContext {
     @Autowired
     private FieldIdsProperties fieldIdsProperties;
 
@@ -57,10 +51,8 @@ class SickDayMapperTest extends AbstractSpringContextClass {
             File sickDayTaskJson = FileNamesProperties.getFileFromResources(fileNamesProperties.getSickDayTask());
             TaskDto taskDto = objectMapper.readValue(sickDayTaskJson, TaskDto.class);
             SickDayTaskDto sickDayTaskDto;
-
             // when
             sickDayTaskDto = sickDayMapper.toDto(taskDto);
-
             // then
             assertThat(sickDayTaskDto).isNotNull();
             assertThat(sickDayTaskDto)
@@ -100,10 +92,8 @@ class SickDayMapperTest extends AbstractSpringContextClass {
             TaskDto taskDto = objectMapper.readValue(sickDayTaskJson, TaskDto.class);
             // подставляются некорректные данные
             taskDto.customField(fieldIdsProperties.getSickDaysType()).setValue(null);
-
             // when
             Supplier<SickDayTaskDto> action = () -> sickDayMapper.toDto(taskDto);
-
             // then
             assertThrows(SickDayTypeNotFoundException.class, action::get);
         }
@@ -117,15 +107,12 @@ class SickDayMapperTest extends AbstractSpringContextClass {
             File sickDayTaskJson = FileNamesProperties.getFileFromResources(fileNamesProperties.getSickDayTask());
             TaskDto taskDtoWithoutStartDate = objectMapper.readValue(sickDayTaskJson, TaskDto.class);
             TaskDto taskDtoWithoutEndDate = objectMapper.readValue(sickDayTaskJson, TaskDto.class);
-
             // подставляются некорректные данные
             taskDtoWithoutStartDate.customField(fieldIdsProperties.getStartDateId()).setValue(null);
             taskDtoWithoutEndDate.customField(fieldIdsProperties.getEndDateId()).setValue(null);
-
             // when
             Supplier<SickDayTaskDto> action1 = () -> sickDayMapper.toDto(taskDtoWithoutStartDate);
             Supplier<SickDayTaskDto> action2 = () -> sickDayMapper.toDto(taskDtoWithoutEndDate);
-
             // then
             assertAll(
                     () -> assertThrows(SickDayDateNotFoundException.class, action1::get),
@@ -141,13 +128,10 @@ class SickDayMapperTest extends AbstractSpringContextClass {
             // given
             File sickDayTaskJson = FileNamesProperties.getFileFromResources(fileNamesProperties.getSickDayTask());
             TaskDto taskDtoWithoutSickDays = objectMapper.readValue(sickDayTaskJson, TaskDto.class);
-
             // подставляются некорректные данные
             taskDtoWithoutSickDays.<RelationshipFieldDto>customField(fieldIdsProperties.getSickDaysId()).setValue(List.of());
-
             // when
             Supplier<SickDayTaskDto> action1 = () -> sickDayMapper.toDto(taskDtoWithoutSickDays);
-
             // then
             assertThrows(EmployeeNotFoundException.class, action1::get);
         }

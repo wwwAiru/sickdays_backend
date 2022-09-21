@@ -4,9 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import ru.egartech.sickday.AbstractSpringContextClass;
-import ru.egartech.sickday.config.SickDayRemainResolverTestConfig;
+import ru.egartech.sickday.AbstractSpringContext;
 import ru.egartech.sickday.model.SickDayTaskDto;
 import ru.egartech.sickday.util.Generator;
 
@@ -14,9 +12,8 @@ import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@ContextConfiguration(classes = SickDayRemainResolverTestConfig.class)
 @DisplayName("Тестирование класса для нахождения количества доступных sick days")
-class SickDayRemainResolverTest extends AbstractSpringContextClass {
+class SickDayRemainResolverTest extends AbstractSpringContext {
     @Autowired
     private SickDayRemainResolver sickDayRemainResolver;
 
@@ -30,10 +27,8 @@ class SickDayRemainResolverTest extends AbstractSpringContextClass {
         public void moreThanMaximumSickDayCountTest() {
             // given
             List<SickDayTaskDto> sickDays = Generator.generateSickDays(10);
-
             // when
             long remainSickDaysCount = sickDayRemainResolver.compute(TYPE, sickDays);
-
             // then
             assertThat(remainSickDaysCount).isEqualTo(0);
         }
@@ -43,10 +38,8 @@ class SickDayRemainResolverTest extends AbstractSpringContextClass {
         public void inRangeMaximumSickDayCountTest() {
             // given
             List<SickDayTaskDto> sickDays = Generator.generateSickDays(2);
-
             // when
             long remainSickDaysCount = sickDayRemainResolver.compute(TYPE, sickDays);
-
             // then
             assertThat(remainSickDaysCount).isEqualTo(2);
         }
@@ -56,10 +49,8 @@ class SickDayRemainResolverTest extends AbstractSpringContextClass {
         public void minimumSickDayCountTest() {
             // given
             List<SickDayTaskDto> sickDays = List.of();
-
             // when
             long remainSickDaysCount = sickDayRemainResolver.compute(TYPE, sickDays);
-
             // then
             assertThat(remainSickDaysCount).isEqualTo(4);
         }
@@ -75,10 +66,8 @@ class SickDayRemainResolverTest extends AbstractSpringContextClass {
         public void moreThanMaximumSickDayCountTest() {
             // given
             List<SickDayTaskDto> sickDays = Generator.generateSickDays(10);
-
             // when
             long remainSickDaysCount = sickDayRemainResolver.compute(TYPE, sickDays);
-
             // then
             assertThat(remainSickDaysCount).isEqualTo(0);
         }
@@ -88,10 +77,8 @@ class SickDayRemainResolverTest extends AbstractSpringContextClass {
         public void minimumSickDayCountTest() {
             // given
             List<SickDayTaskDto> sickDays = List.of();
-
             // when
             long remainSickDaysCount = sickDayRemainResolver.compute(TYPE, sickDays);
-
             // then
             assertThat(remainSickDaysCount).isEqualTo(1);
         }
@@ -108,10 +95,8 @@ class SickDayRemainResolverTest extends AbstractSpringContextClass {
         public void moreThanMaximumSickDayCountTest() {
             // given
             List<SickDayTaskDto> sickDays = Generator.generateSickDays(10);
-
             // when
             long remainSickDaysCount = sickDayRemainResolver.compute(TYPE, sickDays);
-
             // then
             assertThat(remainSickDaysCount).isEqualTo(0);
         }
@@ -121,10 +106,8 @@ class SickDayRemainResolverTest extends AbstractSpringContextClass {
         public void inRangeMaximumSickDayCountTest() {
             // given
             List<SickDayTaskDto> sickDays = Generator.generateSickDays(2);
-
             // when
             long remainSickDaysCount = sickDayRemainResolver.compute(TYPE, sickDays);
-
             // then
             assertThat(remainSickDaysCount).isEqualTo(2);
         }
@@ -134,10 +117,8 @@ class SickDayRemainResolverTest extends AbstractSpringContextClass {
         public void minimumSickDayCountTest() {
             // given
             List<SickDayTaskDto> sickDays = List.of();
-
             // when
             long remainSickDaysCount = sickDayRemainResolver.compute(TYPE, sickDays);
-
             // then
             assertThat(remainSickDaysCount).isEqualTo(4);
         }
