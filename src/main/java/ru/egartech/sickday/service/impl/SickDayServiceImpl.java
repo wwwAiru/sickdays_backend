@@ -71,13 +71,7 @@ public class SickDayServiceImpl implements SickDayService {
                     .status(sickDayTaskDto.getStatus())
                     .build();
 
-            List<AssignerDto> assigners = sickDayTaskDto.getAssigners()
-                    .stream()
-                    .map(e -> AssignerDto.builder()
-                            .id(e.getId())
-                            .build())
-                    .toList();
-
+            List<AssignerDto> assigners = getAssigners(sickDayTaskDto.getAssigners());
             newTaskDto = taskRepository.create(sickDaysListByPosition, createTaskDto);
             sickDayTaskDto.setId(newTaskDto.getId());
             newTaskDto.setAssigners(assigners);
@@ -88,12 +82,7 @@ public class SickDayServiceImpl implements SickDayService {
 
         try {
             // связывание id нового больничного с создавшим его сотрудником
-            String[] assignerIds = sickDayTaskDto.getAssigners()
-                    .stream()
-                    .map(SickDayAssignerDto::getId)
-                    .toList()
-                    .toArray(new String[0]);
-
+            String[] assignerIds = getAssignersIds(sickDayTaskDto.getAssigners());
             UpdateTaskDto updateTaskDto = UpdateTaskDto.builder()
                     .id(newTaskDto.getId())
                     .assignees(Assigner.link(assignerIds))
@@ -125,11 +114,7 @@ public class SickDayServiceImpl implements SickDayService {
     public SickDayTaskDto updateSickDayById(String sickDayId,
                                             SickDayTaskDto sickDayTaskDto) throws SickDayException {
         sickDayTaskDto.setId(sickDayId);
-        String[] assignerIds = sickDayTaskDto.getAssigners()
-                .stream()
-                .map(SickDayAssignerDto::getId)
-                .toList()
-                .toArray(new String[0]);
+        String[] assignerIds = getAssignersIds(sickDayTaskDto.getAssigners());
 
         UpdateTaskDto updateTaskDto = UpdateTaskDto.builder()
                 .id(sickDayId)
@@ -192,6 +177,23 @@ public class SickDayServiceImpl implements SickDayService {
         return taskMapper.toDto(sickDay, id -> taskRepository
                 .findById(sickDay.getId())
                 .orElseThrow(SickDayApplicationException::new));
+    }
+
+    private List<AssignerDto> getAssigners(List<SickDayAssignerDto> sickDayAssignerDtos) {
+        return sickDayAssignerDtos
+                .stream()
+                .map(e -> AssignerDto.builder()
+                        .id(e.getId())
+                        .build())
+                .toList();
+    }
+
+    private String[] getAssignersIds(List<SickDayAssignerDto> sickDayAssignerDtos) {
+        return sickDayAssignerDtos
+                .stream()
+                .map(SickDayAssignerDto::getId)
+                .toList()
+                .toArray(new String[0]);
     }
 
     private List<BindFieldDto> getBindFields(SickDayTaskDto sickDayTaskDto) {
