@@ -25,8 +25,35 @@
         <springfox-swagger2.version>3.0.0</springfox-swagger2.version>
         <jackson-datatype-jsr310.version>2.13.4</jackson-datatype-jsr310.version>
         <click-up-sdk-starter.version>0.0.1-SNAPSHOT</click-up-sdk-starter.version>
-        <egartech-java-spring-openapi-generator>0.0.1-SNAPSHOT</egartech-java-spring-openapi-generator>
+        <swagger-codegen.version>0.0.1-SNAPSHOT</swagger-codegen.version>
     </properties>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <env>dev</env>
+                <spring.profiles.active>dev</spring.profiles.active>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <env>prod</env>
+                <spring.profiles.active>prod</spring.profiles.active>
+            </properties>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <env>test</env>
+                <spring.profiles.active>test</spring.profiles.active>
+            </properties>
+        </profile>
+    </profiles>
 
     <dependencies>
         <dependency>
@@ -94,12 +121,19 @@
 
         <dependency>
             <groupId>ru.egartech</groupId>
-            <artifactId>egartech-java-spring-openapi-generator</artifactId>
-            <version>${egartech-java-spring-openapi-generator}</version>
+            <artifactId>swagger-codegen</artifactId>
+            <version>${swagger-codegen.version}</version>
         </dependency>
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -127,7 +161,7 @@
                         </goals>
                         <configuration>
                             <inputSpec>${project.basedir}/openapi/openapi.yml</inputSpec>
-                            <generatorName>egartech-java-spring</generatorName>
+                            <generatorName>spring-codegen</generatorName>
                             <apiPackage>ru.egartech.sickday</apiPackage>
                             <modelPackage>ru.egartech.sickday.model</modelPackage>
                             <configOptions>
@@ -139,8 +173,8 @@
                 <dependencies>
                     <dependency>
                         <groupId>ru.egartech</groupId>
-                        <artifactId>egartech-java-spring-openapi-generator</artifactId>
-                        <version>0.0.1-SNAPSHOT</version>
+                        <artifactId>swagger-codegen</artifactId>
+                        <version>${swagger-codegen.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>
