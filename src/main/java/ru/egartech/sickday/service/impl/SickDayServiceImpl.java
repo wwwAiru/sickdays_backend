@@ -4,11 +4,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.egartech.sdk.dto.task.deserialization.TaskDto;
+import ru.egartech.sdk.dto.task.deserialization.customfield.assigner.AssignerDto;
 import ru.egartech.sdk.dto.task.deserialization.customfield.field.dropdown.DropdownFieldDto;
 import ru.egartech.sdk.dto.task.deserialization.customfield.field.relationship.RelationshipFieldDto;
 import ru.egartech.sdk.dto.task.deserialization.customfield.field.relationship.RelationshipValueDto;
 import ru.egartech.sdk.dto.task.serialization.CreateTaskDto;
 import ru.egartech.sdk.dto.task.serialization.UpdateTaskDto;
+import ru.egartech.sdk.dto.task.serialization.assigner.Assigner;
 import ru.egartech.sdk.dto.task.serialization.customfield.request.CustomFieldRequest;
 import ru.egartech.sdk.dto.task.serialization.customfield.update.BindFieldDto;
 import ru.egartech.sickday.domain.branch.FreeSickDaysByBranchResolver;
@@ -23,7 +25,8 @@ import ru.egartech.sickday.exception.sickday.SickDayCreateException;
 import ru.egartech.sickday.exception.sickday.SickDayException;
 import ru.egartech.sickday.exception.sickday.SickDayNotFoundException;
 import ru.egartech.sickday.exception.sickday.SickDayUpdateException;
-import ru.egartech.sickday.mapper.SickDayMapper;
+import ru.egartech.sickday.mapper.TaskMapper;
+import ru.egartech.sickday.model.SickDayAssignerDto;
 import ru.egartech.sickday.model.SickDayRemainDto;
 import ru.egartech.sickday.model.SickDayTaskDto;
 import ru.egartech.sickday.property.FieldIdsProperties;
@@ -45,11 +48,11 @@ public class SickDayServiceImpl implements SickDayService {
     private final SickDayRemainResolver sickDayRemainResolver;
     private final SickDayListIdByPositionResolver sickDayListIdByPositionResolver;
     private final FieldIdsProperties fieldIdsProperties;
-    private final SickDayMapper sickDayMapper;
+    private final TaskMapper taskMapper;
 
     @Override
     public List<SickDayTaskDto> getSickDayByIds(List<String> ids) {
-        return sickDayMapper.toListDto(taskRepository.findByIds(ids));
+        return taskMapper.toListDto(taskRepository.findByIds(ids));
     }
 
     @Override
@@ -68,9 +71,16 @@ public class SickDayServiceImpl implements SickDayService {
                     .status(sickDayTaskDto.getStatus())
                     .build();
 
+            List<AssignerDto> assigners = sickDayTaskDto.getAssigners()
+                    .stream()
+                    .map(e -> AssignerDto.builder()
+                            .id(e.getId())
+                            .build())
+                    .toList();
+
             newTaskDto = taskRepository.create(sickDaysListByPosition, createTaskDto);
             sickDayTaskDto.setId(newTaskDto.getId());
-            newTaskDto.setAssigners(sickDayMapper.mapAssigners(sickDayTaskDto.getAssigners()));
+            newTaskDto.setAssigners(assigners);
             log.info("Creating task with id:{}", newTaskDto.getId());
         } catch (RuntimeException e) {
             throw new SickDayCreateException(e);
@@ -78,21 +88,17 @@ public class SickDayServiceImpl implements SickDayService {
 
         try {
             // связывание id нового больничного с создавшим его сотрудником
-            List<BindFieldDto> bindFieldDtos = List.of(
-                    BindFieldDto.of(fieldIdsProperties.getStartDateId(), sickDayTaskDto.getStartDate()),
-                    BindFieldDto.of(fieldIdsProperties.getEndDateId(), sickDayTaskDto.getEndDate()),
-                    BindFieldDto.of(
-                            fieldIdsProperties.getSickDaysType(),
-                            SickDayType.valueOf(sickDayTaskDto.getType()).getOrderindex()
-                    )
-            );
+            String[] assignerIds = sickDayTaskDto.getAssigners()
+                    .stream()
+                    .map(SickDayAssignerDto::getId)
+                    .toList()
+                    .toArray(new String[0]);
 
             UpdateTaskDto updateTaskDto = UpdateTaskDto.builder()
                     .id(newTaskDto.getId())
-                    .linkTask(fieldIdsProperties.getSickDaysId(), sickDayTaskDto.getEmployee().getId())
-                    .assignTo(sickDayMapper.mapAssignersIds(newTaskDto.getAssigners()).toArray(new String[0]))
+                    .assignees(Assigner.link(assignerIds))
                     .status(sickDayTaskDto.getStatus())
-                    .customFields(bindFieldDtos)
+                    .customFields(getBindFields(sickDayTaskDto))
                     .build();
 
             TaskDto updatedTaskDto = taskRepository.update(updateTaskDto);
@@ -105,7 +111,7 @@ public class SickDayServiceImpl implements SickDayService {
 
     @Override
     public SickDayTaskDto getSickDayById(String sickDayId) {
-        return sickDayMapper.toDto(taskRepository
+        return taskMapper.toDto(taskRepository
                 .findById(sickDayId)
                 .orElseThrow(() -> {
                     SickDayNotFoundException ex = new SickDayNotFoundException();
@@ -119,25 +125,17 @@ public class SickDayServiceImpl implements SickDayService {
     public SickDayTaskDto updateSickDayById(String sickDayId,
                                             SickDayTaskDto sickDayTaskDto) throws SickDayException {
         sickDayTaskDto.setId(sickDayId);
-        List<BindFieldDto> bindFieldDtos = List.of(
-                BindFieldDto.of(fieldIdsProperties.getStartDateId(), sickDayTaskDto.getStartDate()),
-                BindFieldDto.of(fieldIdsProperties.getEndDateId(), sickDayTaskDto.getEndDate()),
-                BindFieldDto.of(
-                        fieldIdsProperties.getSickDaysType(),
-                        SickDayType.valueOf(sickDayTaskDto.getType()).getOrderindex()
-                )
-        );
-
-        String[] assignerDtos = sickDayMapper
-                .mapAssignersIds(sickDayMapper.mapAssigners(sickDayTaskDto.getAssigners()))
+        String[] assignerIds = sickDayTaskDto.getAssigners()
+                .stream()
+                .map(SickDayAssignerDto::getId)
+                .toList()
                 .toArray(new String[0]);
 
         UpdateTaskDto updateTaskDto = UpdateTaskDto.builder()
                 .id(sickDayId)
-                .linkTask(fieldIdsProperties.getSickDaysId(), sickDayTaskDto.getEmployee().getId())
-                .assignTo(assignerDtos)
+                .assignees(Assigner.link(assignerIds))
                 .status(sickDayTaskDto.getStatus())
-                .customFields(bindFieldDtos)
+                .customFields(getBindFields(sickDayTaskDto))
                 .build();
 
         TaskDto updatedTaskDto = taskRepository.update(updateTaskDto);
@@ -149,7 +147,7 @@ public class SickDayServiceImpl implements SickDayService {
     public SickDayRemainDto getRemainSickDaysByIds(List<String> ids, String branch) {
         List<TaskDto> taskDtos = taskRepository.findByIds(ids);
         FreeSickDayExtraditionType sickDayType = FreeSickDaysByBranchResolver.getFreeSickDayType(branch);
-        long leftSickDaysCount = sickDayRemainResolver.compute(sickDayType, sickDayMapper.toListDto(taskDtos));
+        long leftSickDaysCount = sickDayRemainResolver.compute(sickDayType, taskMapper.toListDto(taskDtos));
 
         return SickDayRemainDto.builder()
                 .branch(branch)
@@ -161,7 +159,7 @@ public class SickDayServiceImpl implements SickDayService {
     public SickDayRemainDto getRemainSickDaysByEgarId(String egarId, Integer listId) throws SickDayException {
         TaskDto taskDto = getTaskByEgarIdWithListId(egarId, listId);
         List<RelationshipValueDto> sickDays = getSickDaysByTask(taskDto, false);
-        List<SickDayTaskDto> SickDayTaskDtos = sickDayMapper.toListDto(sickDays, id -> taskRepository
+        List<SickDayTaskDto> SickDayTaskDtos = taskMapper.toListDto(sickDays, id -> taskRepository
                 .findById(id)
                 .orElseThrow(SickDayApplicationException::new));
 
@@ -191,9 +189,21 @@ public class SickDayServiceImpl implements SickDayService {
                 .findFirst()
                 .orElseThrow(SickDayNotFoundException::new);
 
-        return sickDayMapper.toDto(sickDay, id -> taskRepository
+        return taskMapper.toDto(sickDay, id -> taskRepository
                 .findById(sickDay.getId())
                 .orElseThrow(SickDayApplicationException::new));
+    }
+
+    private List<BindFieldDto> getBindFields(SickDayTaskDto sickDayTaskDto) {
+        return List.of(
+                BindFieldDto.of(fieldIdsProperties.getStartDateId(), sickDayTaskDto.getStartDate()),
+                BindFieldDto.of(fieldIdsProperties.getEndDateId(), sickDayTaskDto.getEndDate()),
+                BindFieldDto.of(
+                        fieldIdsProperties.getSickDaysType(),
+                        SickDayType.valueOf(sickDayTaskDto.getType()).getOrderindex()
+                ),
+                BindFieldDto.linkTask(fieldIdsProperties.getSickDaysId(), sickDayTaskDto.getEmployee().getId())
+        );
     }
 
     private TaskDto getTaskByEgarIdWithListId(String egarId, Integer listId) {
