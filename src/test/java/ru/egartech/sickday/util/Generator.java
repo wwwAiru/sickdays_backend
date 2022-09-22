@@ -1,7 +1,5 @@
 package ru.egartech.sickday.util;
 
-import ru.egartech.sdk.dto.task.deserialization.TaskDto;
-import ru.egartech.sdk.dto.task.deserialization.status.StatusDto;
 import ru.egartech.sickday.domain.position.PositionType;
 import ru.egartech.sickday.domain.status.SickDayStatusType;
 import ru.egartech.sickday.domain.type.SickDayType;
@@ -43,26 +41,5 @@ public class Generator {
         }
 
         return sickDayTaskDtos;
-    }
-
-    public static List<TaskDto> generateTasks(int count) {
-        List<TaskDto> taskDtos = new ArrayList<>();
-        if (count < 1) {
-            return taskDtos;
-        }
-
-        for (int i = 1; i <= count; i++) {
-            TaskDto taskDto = TaskDto.builder()
-                    .id(String.valueOf(i))
-                    .name(String.valueOf(i))
-                    .assigners(List.of())
-                    .status(new StatusDto())
-                    .customFields(new HashMap<>())
-                    .build();
-
-            taskDtos.add(taskDto);
-        }
-
-        return taskDtos;
     }
 }
