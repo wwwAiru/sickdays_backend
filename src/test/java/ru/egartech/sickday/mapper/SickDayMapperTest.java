@@ -38,7 +38,7 @@ class SickDayMapperTest extends AbstractSpringContext {
     private FileNamesProperties fileNamesProperties;
 
     @SpyBean
-    private SickDayMapper sickDayMapper;
+    private TaskMapper sickDayMapper;
 
     @Nested
     @DisplayName("Корректные данные")

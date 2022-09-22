@@ -14,12 +14,9 @@ import ru.egartech.sdk.dto.task.deserialization.TaskDto;
 import ru.egartech.sdk.dto.task.deserialization.TasksDto;
 import ru.egartech.sickday.AbstractSpringContext;
 import ru.egartech.sickday.domain.branch.BranchType;
-import ru.egartech.sickday.domain.position.SickDayListIdByPositionResolver;
-import ru.egartech.sickday.domain.remain.SickDayRemainResolver;
 import ru.egartech.sickday.exception.sickday.SickDayNotFoundException;
-import ru.egartech.sickday.mapper.SickDayMapper;
+import ru.egartech.sickday.mapper.SickDayTaskMapper;
 import ru.egartech.sickday.model.SickDayTaskDto;
-import ru.egartech.sickday.property.FieldIdsProperties;
 import ru.egartech.sickday.repository.TaskRepository;
 import ru.egartech.sickday.service.SickDayService;
 import ru.egartech.sickday.util.Generator;
@@ -34,19 +31,10 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class SickDayServiceImplTest extends AbstractSpringContext {
     @MockBean
-    private SickDayRemainResolver sickDayRemainResolver;
-
-    @MockBean
-    private SickDayListIdByPositionResolver sickDayListIdByPositionResolver;
-
-    @MockBean
     private TaskRepository taskRepository;
 
     @SpyBean
-    private SickDayMapper sickDayMapper;
-
-    @Autowired
-    private FieldIdsProperties fieldIdsProperties;
+    private SickDayTaskMapper sickDayTaskMapper;
 
     @Autowired
     private SickDayService sickDayService;
@@ -57,10 +45,10 @@ class SickDayServiceImplTest extends AbstractSpringContext {
     public void addSickDayTest() {
         // given
         SickDayTaskDto sickDayTaskDto = Generator.generateSickDays(1).get(0);
-        TaskDto taskDto = Generator.generateTasks(1).get(0);
+        TaskDto taskDto = sickDayTaskMapper.toDto(sickDayTaskDto);
         // when
         when(taskRepository.create(anyInt(), any())).thenReturn(taskDto);
-        when(taskRepository.update(any())).thenReturn(new TaskDto());
+        when(taskRepository.update(any())).thenReturn(taskDto);
         sickDayService.addSickDay(sickDayTaskDto);
         // then
         verify(taskRepository, times(1)).create(ArgumentMatchers.anyInt(), ArgumentMatchers.any());
@@ -72,15 +60,14 @@ class SickDayServiceImplTest extends AbstractSpringContext {
     public void getRemainSickDaysByEgarIdTest() {
         // given
         SickDayTaskDto sickDayTaskDto = Generator.generateSickDays(1).get(0);
-        TaskDto taskDto = Generator.generateTasks(1).get(0);
         // подставляются валидные, случайно сгенерированные значения в TaskDto,
         // чтобы внутри сервиса не вызывались кастомные исключения
-        taskDto.setCustomFields(sickDayMapper.getSickDayTaskDtoShortCustomFields(sickDayTaskDto));
+        TaskDto taskDto = sickDayTaskMapper.toDto(sickDayTaskDto);
         TasksDto tasksDto = new TasksDto(List.of(taskDto));
         // when
         when(taskRepository.findTasksByCustomFields(anyInt(), any())).thenReturn(tasksDto);
         when(taskRepository.findById(anyString())).thenReturn(Optional.of(taskDto));
-        sickDayService.getSickDayByIdAndEgarId("egar_id", "1", 0);
+        sickDayService.getSickDayByIdAndEgarId("egar_id", taskDto.getId(), 0);
         // then
         verify(taskRepository, times(1))
                 .findTasksByCustomFields(ArgumentMatchers.anyInt(), ArgumentMatchers.any());
@@ -93,14 +80,7 @@ class SickDayServiceImplTest extends AbstractSpringContext {
     public void getRemainSickDaysByIdsTest() {
         // given
         List<SickDayTaskDto> sickDayTaskDtos = Generator.generateSickDays(3);
-        List<TaskDto> taskDtos = Generator.generateTasks(3);
-        for (int i = 0; i < sickDayTaskDtos.size(); i++) {
-            // подставляются валидные, случайно сгенерированные значения в TaskDto,
-            // чтобы внутри сервиса не вызывались кастомные исключения
-            TaskDto taskDto = taskDtos.get(i);
-            SickDayTaskDto sickDayTaskDto = sickDayTaskDtos.get(i);
-            taskDto.setCustomFields(sickDayMapper.getSickDayTaskDtoShortCustomFields(sickDayTaskDto));
-        }
+        List<TaskDto> taskDtos = sickDayTaskMapper.toListDto(sickDayTaskDtos);
         List<String> sickDaysIds = sickDayTaskDtos
                 .stream()
                 .map(SickDayTaskDto::getId)
@@ -117,10 +97,9 @@ class SickDayServiceImplTest extends AbstractSpringContext {
     public void getSickDayByIdTest() {
         // given
         SickDayTaskDto sickDayTaskDto = Generator.generateSickDays(1).get(0);
-        TaskDto taskDto = Generator.generateTasks(1).get(0);
+        TaskDto taskDto = sickDayTaskMapper.toDto(sickDayTaskDto);
         // подставляются валидные, случайно сгенерированные значения в TaskDto,
         // чтобы внутри сервиса не вызывались кастомные исключения
-        taskDto.setCustomFields(sickDayMapper.getSickDayTaskDtoShortCustomFields(sickDayTaskDto));
         // when
         when(taskRepository.findById(anyString())).thenReturn(Optional.of(taskDto));
         sickDayService.getSickDayById("id");
@@ -133,15 +112,14 @@ class SickDayServiceImplTest extends AbstractSpringContext {
     public void getSickDayByIdAndEgarIdTest() {
         // given
         SickDayTaskDto sickDayTaskDto = Generator.generateSickDays(1).get(0);
-        TaskDto taskDto = Generator.generateTasks(1).get(0);
+        TaskDto taskDto = sickDayTaskMapper.toDto(sickDayTaskDto);
         // подставляются валидные, случайно сгенерированные значения в TaskDto,
         // чтобы внутри сервиса не вызывались кастомные исключения
-        taskDto.setCustomFields(sickDayMapper.getSickDayTaskDtoShortCustomFields(sickDayTaskDto));
         TasksDto taskDtos = new TasksDto(List.of(taskDto));
         // when
         when(taskRepository.findTasksByCustomFields(anyInt(), any())).thenReturn(taskDtos);
         when(taskRepository.findById(anyString())).thenReturn(Optional.of(taskDto));
-        sickDayService.getSickDayByIdAndEgarId("egar_id", sickDayTaskDto.getId(), 0);
+        sickDayService.getSickDayByIdAndEgarId("egar_id", taskDto.getId(), 0);
         // then
         verify(taskRepository, times(1))
                 .findTasksByCustomFields(ArgumentMatchers.anyInt(), ArgumentMatchers.any());
@@ -153,10 +131,9 @@ class SickDayServiceImplTest extends AbstractSpringContext {
     @DisplayName("Тестирование поиска по ids больничных")
     public void getSickDayByIdsTest() {
         SickDayTaskDto sickDayTaskDto = Generator.generateSickDays(1).get(0);
-        TaskDto taskDto = Generator.generateTasks(1).get(0);
+        TaskDto taskDto = sickDayTaskMapper.toDto(sickDayTaskDto);
         // подставляются валидные, случайно сгенерированные значения в TaskDto,
         // чтобы внутри сервиса не вызывались кастомные исключения
-        taskDto.setCustomFields(sickDayMapper.getSickDayTaskDtoShortCustomFields(sickDayTaskDto));
         // when
         when(taskRepository.findByIds(anyList())).thenReturn(List.of(taskDto));
         sickDayService.getRemainSickDaysByIds(List.of("id"), BranchType.MOSCOW.getAsString());
