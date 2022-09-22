@@ -1,5 +1,6 @@
 package ru.egartech.sickday.repository;
 
+import lombok.NonNull;
 import org.springframework.stereotype.Repository;
 import ru.egartech.sdk.dto.task.deserialization.TaskDto;
 import ru.egartech.sdk.dto.task.deserialization.TasksDto;
@@ -13,17 +14,17 @@ import java.util.Optional;
 @Repository
 public interface TaskRepository {
 
-    List<TaskDto> findByIds(List<String> ids);
+    List<TaskDto> findByIds(@NonNull List<String> ids);
 
-    Optional<TaskDto> findById(String id);
+    Optional<TaskDto> findById(@NonNull String id);
 
     TasksDto findTasksByCustomFields(int listId, CustomFieldRequest<?>... customFieldRequest);
 
     List<TasksDto> findTasksByCustomFields(CustomFieldRequest<?>... customFieldRequest);
 
     // clickup создаёт указанное id у таски, только если есть спец. план
-    TaskDto create(Integer listId, CreateTaskDto createTaskDto);
+    TaskDto create(int listId, @NonNull CreateTaskDto createTaskDto);
 
-    TaskDto update(UpdateTaskDto updateTaskDto);
+    TaskDto update(@NonNull UpdateTaskDto updateTaskDto);
 
 }

@@ -38,16 +38,16 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     @Override
     public TasksDto findTasksByCustomFields(int listId, CustomFieldRequest<?>... customFieldRequest) {
-        return listTaskClientImpl.getTasksByCustomFields(listId, customFieldRequest);
+        return listTaskClientImpl.getTasksByCustomFields(listId, false, customFieldRequest);
     }
 
     @Override
     public List<TasksDto> findTasksByCustomFields(CustomFieldRequest<?>... customFieldRequest) {
-        return listTaskClientImpl.getTasksByCustomFields(customFieldRequest);
+        return listTaskClientImpl.getTasksByCustomFields(false, customFieldRequest);
     }
 
     @Override
-    public TaskDto create(Integer listId, CreateTaskDto createTaskDto) {
+    public TaskDto create(int listId, CreateTaskDto createTaskDto) {
         return listTaskClientImpl.createTask(listId, createTaskDto);
     }
 
