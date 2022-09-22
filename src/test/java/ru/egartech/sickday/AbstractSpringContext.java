@@ -6,15 +6,11 @@ import org.springframework.web.client.RestTemplate;
 import ru.egartech.sdk.api.TaskClient;
 import ru.egartech.sdk.api.impl.ListTaskClientImpl;
 import ru.egartech.sdk.api.impl.TaskClientImpl;
-import ru.egartech.sickday.config.PropertiesTestConfig;
-import ru.egartech.sickday.config.RepositoryTestConfig;
-import ru.egartech.sickday.config.ServiceTestConfig;
-import ru.egartech.sickday.config.DomainTestConfig;
-import ru.egartech.sickday.mapper.SickDayMapper;
+import ru.egartech.sickday.config.*;
 
 @SpringBootTest(classes = {
         ObjectMapper.class,
-        SickDayMapper.class,
+        MappersTestConfig.class,
         PropertiesTestConfig.class,
         DomainTestConfig.class,
         ServiceTestConfig.class,
