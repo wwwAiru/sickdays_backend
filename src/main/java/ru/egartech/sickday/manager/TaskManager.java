@@ -1,4 +1,4 @@
-package ru.egartech.sickday.repository;
+package ru.egartech.sickday.manager;
 
 import lombok.NonNull;
 import org.springframework.stereotype.Repository;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface TaskRepository {
+public interface TaskManager {
 
     List<TaskDto> findByIds(@NonNull List<String> ids);
 

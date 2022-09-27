@@ -1,4 +1,4 @@
-package ru.egartech.sickday.repository.impl;
+package ru.egartech.sickday.manager.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -9,14 +9,14 @@ import ru.egartech.sdk.dto.task.deserialization.TasksDto;
 import ru.egartech.sdk.dto.task.serialization.CreateTaskDto;
 import ru.egartech.sdk.dto.task.serialization.UpdateTaskDto;
 import ru.egartech.sdk.dto.task.serialization.customfield.request.CustomFieldRequest;
-import ru.egartech.sickday.repository.TaskRepository;
+import ru.egartech.sickday.manager.TaskManager;
 
 import java.util.List;
 import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class TaskRepositoryImpl implements TaskRepository {
+public class TaskManagerImpl implements TaskManager {
     private final ListTaskClient listTaskClientImpl;
 
     @Override

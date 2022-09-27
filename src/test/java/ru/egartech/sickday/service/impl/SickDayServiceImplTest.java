@@ -17,7 +17,7 @@ import ru.egartech.sickday.domain.branch.BranchType;
 import ru.egartech.sickday.exception.sickday.SickDayNotFoundException;
 import ru.egartech.sickday.mapper.SickDayTaskMapper;
 import ru.egartech.sickday.model.SickDayTaskDto;
-import ru.egartech.sickday.repository.TaskRepository;
+import ru.egartech.sickday.manager.TaskManager;
 import ru.egartech.sickday.service.SickDayService;
 import ru.egartech.sickday.util.Generator;
 
@@ -31,7 +31,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class SickDayServiceImplTest extends AbstractSpringContext {
     @MockBean
-    private TaskRepository taskRepository;
+    private TaskManager taskManager;
 
     @SpyBean
     private SickDayTaskMapper sickDayTaskMapper;
@@ -47,12 +47,12 @@ class SickDayServiceImplTest extends AbstractSpringContext {
         SickDayTaskDto sickDayTaskDto = Generator.generateSickDays(1).get(0);
         TaskDto taskDto = sickDayTaskMapper.toDto(sickDayTaskDto);
         // when
-        when(taskRepository.create(anyInt(), any())).thenReturn(taskDto);
-        when(taskRepository.update(any())).thenReturn(taskDto);
+        when(taskManager.create(anyInt(), any())).thenReturn(taskDto);
+        when(taskManager.update(any())).thenReturn(taskDto);
         sickDayService.addSickDay(sickDayTaskDto);
         // then
-        verify(taskRepository, times(1)).create(ArgumentMatchers.anyInt(), ArgumentMatchers.any());
-        verify(taskRepository, times(1)).update(ArgumentMatchers.any());
+        verify(taskManager, times(1)).create(ArgumentMatchers.anyInt(), ArgumentMatchers.any());
+        verify(taskManager, times(1)).update(ArgumentMatchers.any());
     }
 
     @Test
@@ -65,13 +65,13 @@ class SickDayServiceImplTest extends AbstractSpringContext {
         TaskDto taskDto = sickDayTaskMapper.toDto(sickDayTaskDto);
         TasksDto tasksDto = new TasksDto(List.of(taskDto));
         // when
-        when(taskRepository.findTasksByCustomFields(anyInt(), any())).thenReturn(tasksDto);
-        when(taskRepository.findById(anyString())).thenReturn(Optional.of(taskDto));
+        when(taskManager.findTasksByCustomFields(anyInt(), any())).thenReturn(tasksDto);
+        when(taskManager.findById(anyString())).thenReturn(Optional.of(taskDto));
         sickDayService.getSickDayByIdAndEgarId("egar_id", taskDto.getId(), 0);
         // then
-        verify(taskRepository, times(1))
+        verify(taskManager, times(1))
                 .findTasksByCustomFields(ArgumentMatchers.anyInt(), ArgumentMatchers.any());
-        verify(taskRepository, times(1)).
+        verify(taskManager, times(1)).
                 findById(ArgumentMatchers.anyString());
     }
 
@@ -86,10 +86,10 @@ class SickDayServiceImplTest extends AbstractSpringContext {
                 .map(SickDayTaskDto::getId)
                 .toList();
         // when
-        when(taskRepository.findByIds(anyList())).thenReturn(taskDtos);
+        when(taskManager.findByIds(anyList())).thenReturn(taskDtos);
         sickDayService.getRemainSickDaysByIds(sickDaysIds, BranchType.MOSCOW.getAsString());
         // then
-        verify(taskRepository, times(1)).findByIds(ArgumentMatchers.anyList());
+        verify(taskManager, times(1)).findByIds(ArgumentMatchers.anyList());
     }
 
     @Test
@@ -101,10 +101,10 @@ class SickDayServiceImplTest extends AbstractSpringContext {
         // подставляются валидные, случайно сгенерированные значения в TaskDto,
         // чтобы внутри сервиса не вызывались кастомные исключения
         // when
-        when(taskRepository.findById(anyString())).thenReturn(Optional.of(taskDto));
+        when(taskManager.findById(anyString())).thenReturn(Optional.of(taskDto));
         sickDayService.getSickDayById("id");
         // then
-        verify(taskRepository, times(1)).findById(ArgumentMatchers.anyString());
+        verify(taskManager, times(1)).findById(ArgumentMatchers.anyString());
     }
 
     @Test
@@ -117,13 +117,13 @@ class SickDayServiceImplTest extends AbstractSpringContext {
         // чтобы внутри сервиса не вызывались кастомные исключения
         TasksDto taskDtos = new TasksDto(List.of(taskDto));
         // when
-        when(taskRepository.findTasksByCustomFields(anyInt(), any())).thenReturn(taskDtos);
-        when(taskRepository.findById(anyString())).thenReturn(Optional.of(taskDto));
+        when(taskManager.findTasksByCustomFields(anyInt(), any())).thenReturn(taskDtos);
+        when(taskManager.findById(anyString())).thenReturn(Optional.of(taskDto));
         sickDayService.getSickDayByIdAndEgarId("egar_id", taskDto.getId(), 0);
         // then
-        verify(taskRepository, times(1))
+        verify(taskManager, times(1))
                 .findTasksByCustomFields(ArgumentMatchers.anyInt(), ArgumentMatchers.any());
-        verify(taskRepository, times(1))
+        verify(taskManager, times(1))
                 .findById(ArgumentMatchers.anyString());
     }
 
@@ -135,10 +135,10 @@ class SickDayServiceImplTest extends AbstractSpringContext {
         // подставляются валидные, случайно сгенерированные значения в TaskDto,
         // чтобы внутри сервиса не вызывались кастомные исключения
         // when
-        when(taskRepository.findByIds(anyList())).thenReturn(List.of(taskDto));
+        when(taskManager.findByIds(anyList())).thenReturn(List.of(taskDto));
         sickDayService.getRemainSickDaysByIds(List.of("id"), BranchType.MOSCOW.getAsString());
         // then
-        verify(taskRepository, times(1)).findByIds(ArgumentMatchers.anyList());
+        verify(taskManager, times(1)).findByIds(ArgumentMatchers.anyList());
     }
 
     @Test
@@ -147,10 +147,10 @@ class SickDayServiceImplTest extends AbstractSpringContext {
         // given
         SickDayTaskDto sickDayTaskDto = Generator.generateSickDays(1).get(0);
         // when
-        when(taskRepository.update(any())).thenReturn(new TaskDto());
+        when(taskManager.update(any())).thenReturn(new TaskDto());
         sickDayService.updateSickDayById(sickDayTaskDto.getId(), sickDayTaskDto);
         // then
-        verify(taskRepository, times(1)).update(ArgumentMatchers.any());
+        verify(taskManager, times(1)).update(ArgumentMatchers.any());
     }
 
 
