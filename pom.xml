@@ -151,16 +151,14 @@
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
-                <!-- RELEASE_VERSION -->
                 <version>6.0.1</version>
-                <!-- /RELEASE_VERSION -->
                 <executions>
                     <execution>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${project.basedir}/openapi/openapi.yml</inputSpec>
+                            <inputSpec>${project.basedir}/src/main/resources/openapi/openapi.yml</inputSpec>
                             <generatorName>spring-codegen</generatorName>
                             <apiPackage>ru.egartech.sickday</apiPackage>
                             <modelPackage>ru.egartech.sickday.model</modelPackage>
