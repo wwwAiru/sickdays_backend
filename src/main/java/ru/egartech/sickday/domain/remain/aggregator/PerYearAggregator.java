@@ -14,7 +14,7 @@ import java.util.List;
 @Component
 public class PerYearAggregator implements SickDayRemainAggregator {
     @Override
-    public long aggregate(List<SickDayTaskDto> sickDays) {
+    public Long aggregate(List<SickDayTaskDto> sickDays) {
         long usedSickDaysCount = sickDays
                 .stream()
                 .filter(sickDay -> sickDay.getType().equals(SickDayType.SICK_DAY.name()))

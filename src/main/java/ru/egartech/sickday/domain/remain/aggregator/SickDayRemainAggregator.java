@@ -7,7 +7,7 @@ import ru.egartech.sickday.model.SickDayTaskDto;
 import java.util.List;
 
 public interface SickDayRemainAggregator {
-    long aggregate(@NonNull List<SickDayTaskDto> sickDays);
+    Long aggregate(@NonNull List<SickDayTaskDto> sickDays);
 
     FreeSickDayExtraditionType getType();
 }

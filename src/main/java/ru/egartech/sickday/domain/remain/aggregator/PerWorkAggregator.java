@@ -9,7 +9,7 @@ import java.util.List;
 @Component
 public class PerWorkAggregator implements SickDayRemainAggregator {
     @Override
-    public long aggregate(List<SickDayTaskDto> sickDays) {
+    public Long aggregate(List<SickDayTaskDto> sickDays) {
         PerYearAggregator perYearAggregator = new PerYearAggregator();
         return perYearAggregator.aggregate(sickDays);
     }
