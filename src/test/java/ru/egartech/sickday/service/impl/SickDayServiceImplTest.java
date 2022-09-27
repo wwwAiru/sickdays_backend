@@ -87,7 +87,7 @@ class SickDayServiceImplTest extends AbstractSpringContext {
                 .toList();
         // when
         when(taskManager.findByIds(anyList())).thenReturn(taskDtos);
-        sickDayService.getRemainSickDaysByIds(sickDaysIds, BranchType.MOSCOW.getAsString());
+        sickDayService.getRemainSickDaysByIds(sickDaysIds, BranchType.MOSCOW.getName());
         // then
         verify(taskManager, times(1)).findByIds(ArgumentMatchers.anyList());
     }
@@ -136,7 +136,7 @@ class SickDayServiceImplTest extends AbstractSpringContext {
         // чтобы внутри сервиса не вызывались кастомные исключения
         // when
         when(taskManager.findByIds(anyList())).thenReturn(List.of(taskDto));
-        sickDayService.getRemainSickDaysByIds(List.of("id"), BranchType.MOSCOW.getAsString());
+        sickDayService.getRemainSickDaysByIds(List.of("id"), BranchType.MOSCOW.getName());
         // then
         verify(taskManager, times(1)).findByIds(ArgumentMatchers.anyList());
     }

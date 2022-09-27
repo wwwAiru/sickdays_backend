@@ -13,7 +13,7 @@ public class FreeSickDaysByBranchResolver {
     private final BranchesProperties branchesProperties;
 
     public FreeSickDayExtraditionType getFreeSickDayType(@NonNull String branch) {
-        BranchType branchType = BranchType.valueOfName(branch.toLowerCase());
+        BranchType branchType = BranchType.valueOfBranch(branch.toLowerCase());
         if (branchesProperties.getPerYear().contains(branchType)) return FreeSickDayExtraditionType.YEAR;
         if (branchesProperties.getPerQuarter().contains(branchType)) return FreeSickDayExtraditionType.QUARTER;
         if (branchesProperties.getPerWork().contains(branchType)) return FreeSickDayExtraditionType.WORK;

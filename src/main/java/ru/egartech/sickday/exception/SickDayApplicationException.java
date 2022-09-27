@@ -1,6 +1,8 @@
 package ru.egartech.sickday.exception;
 
-public class SickDayApplicationException extends RuntimeException {
+import ru.egartech.sdk.exception.ApplicationException;
+
+public class SickDayApplicationException extends ApplicationException {
     public SickDayApplicationException() {
         super();
     }

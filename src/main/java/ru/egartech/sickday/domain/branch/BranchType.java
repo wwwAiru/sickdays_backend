@@ -27,13 +27,13 @@ public enum BranchType {
     static {
         BY_NAMES = Arrays
                 .stream(BranchType.values()).
-                collect(Collectors.toMap(BranchType::getAsString, Function.identity()));
+                collect(Collectors.toMap(BranchType::getName, Function.identity()));
     }
 
-    public static BranchType valueOfName(@NonNull String name) {
+    public static BranchType valueOfBranch(@NonNull String name) {
         return BY_NAMES.get(name);
     }
 
     @Getter
-    private final String asString;
+    private final String name;
 }
