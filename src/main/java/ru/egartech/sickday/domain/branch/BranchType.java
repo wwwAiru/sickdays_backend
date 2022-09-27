@@ -26,8 +26,8 @@ public enum BranchType {
 
     static {
         BY_NAMES = Arrays
-                .stream(BranchType.values()).
-                collect(Collectors.toMap(BranchType::getName, Function.identity()));
+                .stream(BranchType.values())
+                .collect(Collectors.toMap(BranchType::getName, Function.identity()));
     }
 
     public static BranchType valueOfBranch(@NonNull String name) {

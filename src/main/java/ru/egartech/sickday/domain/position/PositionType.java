@@ -3,8 +3,10 @@ package ru.egartech.sickday.domain.position;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public enum PositionType {
@@ -13,12 +15,12 @@ public enum PositionType {
     ANALYTIC("аналитик"),
     ;
 
-    private static final Map<String, PositionType> BY_POSITION = new HashMap<>();
+    private static final Map<String, PositionType> BY_POSITION;
 
     static {
-        BY_POSITION.put(DEVELOPER.getName(), DEVELOPER);
-        BY_POSITION.put(TESTER.getName(), TESTER);
-        BY_POSITION.put(ANALYTIC.getName(), ANALYTIC);
+        BY_POSITION = Arrays
+                .stream(PositionType.values())
+                .collect(Collectors.toMap(PositionType::getName, Function.identity()));
     }
 
     @Getter
