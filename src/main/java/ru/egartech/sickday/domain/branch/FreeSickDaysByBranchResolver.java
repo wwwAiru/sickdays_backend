@@ -1,30 +1,22 @@
 package ru.egartech.sickday.domain.branch;
 
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import ru.egartech.sickday.domain.remain.FreeSickDayExtraditionType;
 import ru.egartech.sickday.exception.employee.EmployeeBranchNotFoundException;
+import ru.egartech.sickday.property.BranchesProperties;
 
-import java.util.List;
-
+@Component
+@RequiredArgsConstructor
 public class FreeSickDaysByBranchResolver {
-    private static final List<String> PER_YEAR_BRANCHES = List.of(
-            BranchType.MOSCOW.getAsString(),
-            BranchType.SAMARA.getAsString(),
-            BranchType.GOMEL.getAsString()
-    );
-    private static final List<String> PER_QUARTER_BRANCHES = List.of(
-            BranchType.BRYANSK.getAsString(),
-            BranchType.VLADIMIR.getAsString(),
-            BranchType.TOMSK.getAsString()
-    );
-    private static final List<String> PER_WORK_BRANCHES = List.of(
-            BranchType.PENZA.getAsString()
-    );
+    private final BranchesProperties branchesProperties;
 
-    public static FreeSickDayExtraditionType getFreeSickDayType(@NonNull String branch) {
-        if (PER_YEAR_BRANCHES.contains(branch.trim().toLowerCase())) return FreeSickDayExtraditionType.YEAR;
-        if (PER_QUARTER_BRANCHES.contains(branch.trim().toLowerCase())) return FreeSickDayExtraditionType.QUARTER;
-        if (PER_WORK_BRANCHES.contains(branch.trim().toLowerCase())) return FreeSickDayExtraditionType.WORK;
+    public FreeSickDayExtraditionType getFreeSickDayType(@NonNull String branch) {
+        BranchType branchType = BranchType.valueOfName(branch.toLowerCase());
+        if (branchesProperties.getPerYear().contains(branchType)) return FreeSickDayExtraditionType.YEAR;
+        if (branchesProperties.getPerQuarter().contains(branchType)) return FreeSickDayExtraditionType.QUARTER;
+        if (branchesProperties.getPerWork().contains(branchType)) return FreeSickDayExtraditionType.WORK;
         throw new EmployeeBranchNotFoundException();
     }
 }

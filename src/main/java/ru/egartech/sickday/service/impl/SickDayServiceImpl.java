@@ -47,6 +47,7 @@ public class SickDayServiceImpl implements SickDayService {
     private final TaskRepository taskRepository;
     private final SickDayRemainResolver sickDayRemainResolver;
     private final SickDayListIdByPositionResolver sickDayListIdByPositionResolver;
+    private final FreeSickDaysByBranchResolver freeSickDaysByBranchResolver;
     private final FieldIdsProperties fieldIdsProperties;
     private final TaskMapper taskMapper;
 
@@ -131,7 +132,7 @@ public class SickDayServiceImpl implements SickDayService {
     @Override
     public SickDayRemainDto getRemainSickDaysByIds(List<String> ids, String branch) {
         List<TaskDto> taskDtos = taskRepository.findByIds(ids);
-        FreeSickDayExtraditionType sickDayType = FreeSickDaysByBranchResolver.getFreeSickDayType(branch);
+        FreeSickDayExtraditionType sickDayType = freeSickDaysByBranchResolver.getFreeSickDayType(branch);
         long leftSickDaysCount = sickDayRemainResolver.compute(sickDayType, taskMapper.toListDto(taskDtos));
 
         return SickDayRemainDto.builder()
@@ -153,7 +154,7 @@ public class SickDayServiceImpl implements SickDayService {
                 .getValue()
                 .getName();
 
-        FreeSickDayExtraditionType sickDayType = FreeSickDaysByBranchResolver.getFreeSickDayType(branch);
+        FreeSickDayExtraditionType sickDayType = freeSickDaysByBranchResolver.getFreeSickDayType(branch);
         long leftSickDaysCount = sickDayRemainResolver.compute(sickDayType, SickDayTaskDtos);
 
         return SickDayRemainDto.builder()
