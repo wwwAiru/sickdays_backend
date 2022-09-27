@@ -1,17 +1,22 @@
-package ru.egartech.sickday.domain.remain.aggregator;
+package ru.egartech.sickday.domain.remain.aggregator.impl;
 
 import org.springframework.stereotype.Component;
-import ru.egartech.sickday.domain.type.SickDayType;
-import ru.egartech.sickday.domain.remain.FreeSickDayCountType;
 import ru.egartech.sickday.domain.remain.FreeSickDayExtraditionType;
+import ru.egartech.sickday.domain.remain.aggregator.AbstractRemainFreeSickDaysAggregator;
+import ru.egartech.sickday.domain.type.SickDayType;
 import ru.egartech.sickday.model.SickDayTaskDto;
+import ru.egartech.sickday.property.FreeSickDayCountProperties;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 @Component
-public class PerQuarterAggregator implements SickDayRemainAggregator {
+public class PerQuarterAggregator extends AbstractRemainFreeSickDaysAggregator {
+    public PerQuarterAggregator(FreeSickDayCountProperties freeSickDayCountProperties) {
+        super(freeSickDayCountProperties);
+    }
+
     @Override
     public Long aggregate(List<SickDayTaskDto> sickDays) {
         long usedSickDaysCount = sickDays
@@ -20,7 +25,7 @@ public class PerQuarterAggregator implements SickDayRemainAggregator {
                 .filter(this::isSickDayOnThisQuarter)
                 .count();
 
-        return Math.max(0, FreeSickDayCountType.PER_QUARTER.getCount() - usedSickDaysCount);
+        return Math.max(0, freeSickDayCountProperties.getPerQuarter() - usedSickDaysCount);
     }
 
     @Override
@@ -41,13 +46,12 @@ public class PerQuarterAggregator implements SickDayRemainAggregator {
 
     private int getQuarter(Calendar calendar) {
         int month = calendar.get(Calendar.MONTH);
-        return
-                month <= Calendar.MARCH
-                        ? 1
-                        : month <= Calendar.JUNE
-                        ? 2
-                        : month <= Calendar.SEPTEMBER
-                        ? 3
-                        : 4;
+        return month <= Calendar.MARCH
+                ? 1
+                : month <= Calendar.JUNE
+                ? 2
+                : month <= Calendar.SEPTEMBER
+                ? 3
+                : 4;
     }
 }
