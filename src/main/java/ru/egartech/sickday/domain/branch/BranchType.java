@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 public enum BranchType {
     MOSCOW("московский"),
     GOMEL("гомельский"),
-    MAKHACHKALINSIY("махачкалинский"),
+    MAKHACHKALINSKIY("махачкалинский"),
     BRYANSK("брянский"),
     TOMSK("томский"),
     PENZA("пензенский"),
