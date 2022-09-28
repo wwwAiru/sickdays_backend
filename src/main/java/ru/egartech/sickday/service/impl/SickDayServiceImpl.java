@@ -25,12 +25,12 @@ import ru.egartech.sickday.exception.sickday.SickDayCreateException;
 import ru.egartech.sickday.exception.sickday.SickDayException;
 import ru.egartech.sickday.exception.sickday.SickDayNotFoundException;
 import ru.egartech.sickday.exception.sickday.SickDayUpdateException;
+import ru.egartech.sickday.manager.TaskManager;
 import ru.egartech.sickday.mapper.TaskMapper;
 import ru.egartech.sickday.model.SickDayAssignerDto;
 import ru.egartech.sickday.model.SickDayRemainDto;
 import ru.egartech.sickday.model.SickDayTaskDto;
 import ru.egartech.sickday.property.FieldIdsProperties;
-import ru.egartech.sickday.manager.TaskManager;
 import ru.egartech.sickday.service.SickDayService;
 
 import java.math.BigDecimal;
@@ -78,7 +78,11 @@ public class SickDayServiceImpl implements SickDayService {
             newTaskDto.setAssigners(assigners);
             log.info("Creating task with id:{}", newTaskDto.getId());
         } catch (RuntimeException e) {
-            throw new SickDayCreateException(e);
+            SickDayCreateException sickDayCreateException = new SickDayCreateException(e);
+            // id clickup'а создается только тогда, когда есть спец. план
+            // чтобы не путаться, здесь указана пустая строка
+            sickDayCreateException.setId("");
+            throw sickDayCreateException;
         }
 
         try {
@@ -94,7 +98,9 @@ public class SickDayServiceImpl implements SickDayService {
             TaskDto updatedTaskDto = taskManager.update(updateTaskDto);
             log.info("Updating task with id:{}", updatedTaskDto.getId());
         } catch (RuntimeException e) {
-            throw new SickDayUpdateException(e);
+            SickDayUpdateException sickDayUpdateException = new SickDayUpdateException(e);
+            sickDayUpdateException.setId(newTaskDto.getId());
+            throw sickDayUpdateException;
         }
         return sickDayTaskDto;
     }
@@ -173,7 +179,11 @@ public class SickDayServiceImpl implements SickDayService {
                 .stream()
                 .filter(s -> Objects.equals(s.getId(), sickDayId))
                 .findFirst()
-                .orElseThrow(SickDayNotFoundException::new);
+                .orElseThrow(() -> {
+                    SickDayNotFoundException sickDayNotFoundException = new SickDayNotFoundException();
+                    sickDayNotFoundException.setId(sickDayId);
+                    throw sickDayNotFoundException;
+                });
 
         return taskMapper.toDto(sickDay, id -> taskManager
                 .findById(sickDay.getId())
@@ -234,7 +244,11 @@ public class SickDayServiceImpl implements SickDayService {
         Optional<List<RelationshipValueDto>> sickDaysValues = sickDays.map(RelationshipFieldDto::getValue);
         return isSickDaysNeeds
                 // если больничных нет, то отдается пустой список
-                ? sickDaysValues.orElseThrow(SickDayNotFoundException::new)
+                ? sickDaysValues.orElseThrow(() -> {
+                    SickDayNotFoundException sickDayNotFoundException = new SickDayNotFoundException();
+                    sickDayNotFoundException.setId(taskDto.getId());
+                    throw sickDayNotFoundException;
+                })
                 : sickDaysValues.get();
     }
 }
