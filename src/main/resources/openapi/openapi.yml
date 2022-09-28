@@ -55,11 +55,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/SickDayTask'
         '500':
-          description: больничный не смог создаться
+          description: больничный не смог создаться или обновиться
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiErrorMessage'
+                type: object
+              example: {
+                "message": "Ошибка при создании больничного с id:",
+                "milliseconds": "1664287903761",
+                "class": "SickDayCreateException"
+              }
 
   /sickdays/{id}:
     get:
@@ -87,7 +92,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiErrorMessage'
+                type: object
+              example: {
+                "message": "Больничный с id:adfsdf не найден",
+                "milliseconds": "1664286747690",
+                "class": "SickDayNotFoundException"
+              }
     put:
       tags:
         - sickDay
@@ -119,13 +129,23 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiErrorMessage'
+                type: object
+              example: {
+                "message": "Сотрудник не был найден",
+                "milliseconds": "1664280394701",
+                "class": "EmployeeNotFoundException"
+              }
         '500':
           description: больничный не смог обновиться
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiErrorMessage'
+                type: object
+              example:  {
+                "message": "Ошибка при обновлении больничного с id:30cjb68",
+                "milliseconds": "1664287711816",
+                "class": "SickDayUpdateException"
+              }
 
   /sickdays/remain:
     get:
@@ -161,7 +181,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiErrorMessage'
+                type: object
+              example: {
+                "message": "Больничный с id:adfsdf не найден",
+                "milliseconds": "1664286747690",
+                "class": "SickDayNotFoundException"
+              }
 
   /sickdays/remain/{egar_id}:
     get:
@@ -195,7 +220,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiErrorMessage'
+                type: object
+              example: {
+                "message": "Сотрудник не был найден",
+                "milliseconds": "1664280394701",
+                "class": "EmployeeNotFoundException"
+              }
 
   /sickdays/{egar_id}/{id}:
     get:
@@ -235,7 +265,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiErrorMessage'
+                type: object
+              example: {
+                "message": "Сотрудник не был найден",
+                "milliseconds": "1664280394701",
+                "class": "EmployeeNotFoundException"
+              }
 
 components:
   schemas:
@@ -245,7 +280,6 @@ components:
         id:
           type: string
           example: "2wmagcr"
-          x-constraints: "@Null"
         name:
           type: string
           example: "Больничный: Николай Игорь Алексеевич"
@@ -272,19 +306,6 @@ components:
           type: string
           example: "1662035318297"
           x-constraints: "@NotNull"
-
-    ApiErrorMessage:
-      type: object
-      properties:
-        message:
-          type: string
-          example: "Задача с таким id не была найдена"
-        milliseconds:
-          type: string
-          example: "1662035318297"
-        class:
-          type: string
-          example: "ru.egartech.sickday.exception.clickup.ClickUpException"
 
     EmployeeTask:
       type: object
