@@ -9,3 +9,22 @@ clickup:
     branch-id: 4f271e0a-1e4f-4aa6-b4fa-dbb7cb3fa20a
     start-date-id: 58004edd-d04c-4edb-bed8-f6337397fd72
     end-date-id: 879e67e3-eb65-45eb-9a82-94ac94470918
+  api:
+    tokens:
+      - dummy
+
+  branches:
+    per-year:
+      - Moscow
+      - Samara
+      - Gomel
+    per-quarter:
+      - Bryansk
+      - Vladimir
+      - Tomsk
+    per-work:
+      - Penza
+  free-sick-days-count:
+    per-year: 4
+    per-quarter: 1
+    per-work: 4
