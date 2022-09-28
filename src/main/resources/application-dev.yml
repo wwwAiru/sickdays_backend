@@ -37,3 +37,16 @@ management:
     web:
       exposure:
         include: "*"
+
+messages:
+  exception:
+    sick-days:
+      create: sick-days.exception.create
+      update: sick-days.exception.update
+      not-found-id: sick-days.exception.not-found-id
+      not-found-date: sick-days.exception.not-found-date
+      not-found-type: sick-days.exception.not-found-type
+      not-found-status: sick-days.exception.not-found-status
+    employees:
+      not-found: employees.exception.not-found
+      not-found-branch: employees.exception.not-found-branch
