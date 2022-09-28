@@ -6,7 +6,6 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class SickDayNotFoundException extends SickDayException {
-    protected String id;
 
     public SickDayNotFoundException() {
         super();
