@@ -1,52 +1,5 @@
-clickup:
-  api:
-    tokens:
-      - ${CLICK_UP_API_TOKEN}
-  search-list:
-    ids:
-      - 180311895
-  list:
-    developers-sick-days-id: 210315847
-    testers-sick-days-id: 0
-    analytics-sick-days-id: 0
-  field:
-    egar-id: 836c9684-0c71-4714-aff2-900b0ded0685
-    sick_days-id: 7e110a3d-31c1-47b0-a269-22daaa527746
-    sick-days-type: e8430d2b-d443-4c2d-addc-cab56324fc29
-    branch-id: 4f271e0a-1e4f-4aa6-b4fa-dbb7cb3fa20a
-    start-date-id: 58004edd-d04c-4edb-bed8-f6337397fd72
-    end-date-id: 879e67e3-eb65-45eb-9a82-94ac94470918
-  branches:
-    per-year:
-      - Moscow
-      - Samara
-      - Gomel
-    per-quarter:
-      - Bryansk
-      - Vladimir
-      - Tomsk
-    per-work:
-      - Penza
-  free-sick-days-count:
-    per-year: 4
-    per-quarter: 1
-    per-work: 4
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-
-messages:
-  exception:
-    sick-days:
-      create: sick-days.exception.create
-      update: sick-days.exception.update
-      not-found-id: sick-days.exception.not-found-id
-      not-found-date: sick-days.exception.not-found-date
-      not-found-type: sick-days.exception.not-found-type
-      not-found-status: sick-days.exception.not-found-status
-    employees:
-      not-found: employees.exception.not-found
-      not-found-branch: employees.exception.not-found-branch
+spring:
+  application:
+    name: sickday_backend
+  config:
+    import: configserver:http://176.113.82.235:8888
