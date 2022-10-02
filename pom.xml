@@ -10,7 +10,7 @@
     </parent>
 
     <groupId>ru.egartech</groupId>
-    <artifactId>sickday</artifactId>
+    <artifactId>sickday_backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>sickday</name>
     <description>Microservice for sick days</description>
@@ -144,6 +144,7 @@
     </dependencyManagement>
 
     <build>
+        <finalName>${artifactId}</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
