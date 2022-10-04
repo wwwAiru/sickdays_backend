@@ -18,24 +18,24 @@ public class Generator {
 
         for (int i = 1; i <= count; i++) {
             EmployeeTaskDto employeeTaskDto = EmployeeTaskDto.builder()
-                                                             .id(UUID.randomUUID().toString())
-                                                             .position(PositionType.values()[new Random().nextInt(PositionType.values().length)].getName())
-                                                             .build();
+                    .id(UUID.randomUUID().toString())
+                    .position(PositionType.values()[new Random().nextInt(PositionType.values().length)].getName())
+                    .build();
 
             List<SickDayAssignerDto> assignerDtos = List.of(SickDayAssignerDto.builder()
-                                                                              .id(UUID.randomUUID().toString())
-                                                                              .build());
+                    .id(UUID.randomUUID().toString())
+                    .build());
 
             SickDayTaskDto sickDayTaskDto = SickDayTaskDto.builder()
-                                                          .id(String.valueOf(i))
-                                                          .name(String.valueOf(i))
-                                                          .status(SickDayStatusType.NEW.getAsString())
-                                                          .type(SickDayType.SICK_DAY.name())
-                                                          .employee(employeeTaskDto)
-                                                          .assigners(assignerDtos)
-                                                          .startDate(String.valueOf(new Date().getTime()))
-                                                          .endDate(String.valueOf(new Date().getTime()))
-                                                          .build();
+                    .id(String.valueOf(i))
+                    .name(String.valueOf(i))
+                    .status(SickDayStatusType.NEW.getAsString())
+                    .type(SickDayType.SICK_DAY.name())
+                    .employee(employeeTaskDto)
+                    .assigners(assignerDtos)
+                    .startDate(String.valueOf(new Date().getTime()))
+                    .endDate(String.valueOf(new Date().getTime()))
+                    .build();
 
             sickDayTaskDtos.add(sickDayTaskDto);
         }

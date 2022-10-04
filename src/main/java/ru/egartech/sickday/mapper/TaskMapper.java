@@ -57,19 +57,19 @@ public class TaskMapper implements DtoMapper<TaskDto, SickDayTaskDto> {
         RelationshipFieldDto employeeRelationship = getEmployeeRelationshipFromSickDayTask(sickDayTask);
 
         EmployeeTaskDto employeeTaskDto = EmployeeTaskDto.builder()
-                                                         .id(getEmployeeValueFromRelationship(employeeRelationship).getId())
-                                                         .build();
+                .id(getEmployeeValueFromRelationship(employeeRelationship).getId())
+                .build();
 
         return SickDayTaskDto.builder()
-                             .id(sickDayTask.getId())
-                             .name(sickDayTask.getName())
-                             .employee(employeeTaskDto)
-                             .status(getSickDayStatus(sickDayTask))
-                             .type(getSickDayType(sickDayTask))
-                             .startDate(getSickDayDate(sickDayTask, fieldIdsProperties.getStartDateId()))
-                             .endDate(getSickDayDate(sickDayTask, fieldIdsProperties.getEndDateId()))
-                             .assigners(getAssigners(sickDayTask.getAssigners()))
-                             .build();
+                .id(sickDayTask.getId())
+                .name(sickDayTask.getName())
+                .employee(employeeTaskDto)
+                .status(getSickDayStatus(sickDayTask))
+                .type(getSickDayType(sickDayTask))
+                .startDate(getSickDayDate(sickDayTask, fieldIdsProperties.getStartDateId()))
+                .endDate(getSickDayDate(sickDayTask, fieldIdsProperties.getEndDateId()))
+                .assigners(getAssigners(sickDayTask.getAssigners()))
+                .build();
     }
 
     private List<SickDayAssignerDto> getAssigners(List<AssignerDto> assignerDtos) {
@@ -77,8 +77,8 @@ public class TaskMapper implements DtoMapper<TaskDto, SickDayTaskDto> {
 
         assignerDtos.forEach(assignerDto -> assigners.add(
                 SickDayAssignerDto.builder()
-                                  .id(assignerDto.getId())
-                                  .build()
+                        .id(assignerDto.getId())
+                        .build()
         ));
         return assigners;
     }
