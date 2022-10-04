@@ -181,7 +181,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${project.basedir}/src/main/resources/openapi/openapi.yml</inputSpec>
+                            <inputSpec>${project.basedir}/src/main/resources/swagger/openapi.yml</inputSpec>
                             <generatorName>spring-codegen</generatorName>
                             <apiPackage>ru.egartech.sickday</apiPackage>
                             <modelPackage>ru.egartech.sickday.model</modelPackage>
