@@ -6,6 +6,6 @@ import ru.egartech.sickday.property.FreeSickDayCountProperties;
 
 @Component
 @RequiredArgsConstructor
-public abstract class AbstractRemainFreeSickDaysAggregator implements SickDayRemainAggregator{
+public abstract class AbstractRemainFreeSickDaysAggregator implements SickDayRemainAggregator {
     protected final FreeSickDayCountProperties freeSickDayCountProperties;
 }

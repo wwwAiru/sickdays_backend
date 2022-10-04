@@ -12,12 +12,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import ru.egartech.sdk.dto.task.deserialization.TaskDto;
 import ru.egartech.sdk.dto.task.deserialization.TasksDto;
-import ru.egartech.sickday.AbstractSpringContext;
+import ru.egartech.sickday.AbstractTest;
 import ru.egartech.sickday.domain.branch.BranchType;
 import ru.egartech.sickday.exception.sickday.SickDayNotFoundException;
+import ru.egartech.sickday.manager.TaskManager;
 import ru.egartech.sickday.mapper.SickDayTaskMapper;
 import ru.egartech.sickday.model.SickDayTaskDto;
-import ru.egartech.sickday.manager.TaskManager;
 import ru.egartech.sickday.service.SickDayService;
 import ru.egartech.sickday.util.Generator;
 
@@ -29,7 +29,7 @@ import static org.mockito.Mockito.*;
 
 @DisplayName("Тестирование mock'а SickDayService")
 @ExtendWith(MockitoExtension.class)
-class SickDayServiceImplTest extends AbstractSpringContext {
+class SickDayServiceImplTest extends AbstractTest {
     @MockBean
     private TaskManager taskManager;
 

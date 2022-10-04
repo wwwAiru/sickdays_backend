@@ -245,10 +245,10 @@ public class SickDayServiceImpl implements SickDayService {
         return isSickDaysNeeds
                 // если больничных нет, то отдается пустой список
                 ? sickDaysValues.orElseThrow(() -> {
-                    SickDayNotFoundException sickDayNotFoundException = new SickDayNotFoundException();
-                    sickDayNotFoundException.setId(taskDto.getId());
-                    throw sickDayNotFoundException;
-                })
+            SickDayNotFoundException sickDayNotFoundException = new SickDayNotFoundException();
+            sickDayNotFoundException.setId(taskDto.getId());
+            throw sickDayNotFoundException;
+        })
                 : sickDaysValues.get();
     }
 }

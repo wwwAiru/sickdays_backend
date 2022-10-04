@@ -141,7 +141,7 @@ paths:
             application/json:
               schema:
                 type: object
-              example:  {
+              example: {
                 "message": "Ошибка при обновлении больничного с id:30cjb68",
                 "milliseconds": "1664287711816",
                 "class": "SickDayUpdateException"

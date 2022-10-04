@@ -1,8 +1,12 @@
-server:
-  port: 8100
-
 spring:
   profiles:
-    active: @spring.profiles.active@
+    active: dev
+  application:
+    name: sickday_backend
+  config:
+    import: configserver:${CONFIG_HOST:http://176.113.82.235}:${CONFIG_PORT:8888}
+  cloud:
+    config:
+      fail-fast: true
   jackson:
     default-property-inclusion: non_null
