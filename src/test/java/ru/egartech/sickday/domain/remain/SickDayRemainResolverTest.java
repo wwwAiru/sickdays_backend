@@ -4,7 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import ru.egartech.sickday.AbstractSpringContext;
+import ru.egartech.sickday.AbstractTest;
 import ru.egartech.sickday.model.SickDayTaskDto;
 import ru.egartech.sickday.util.Generator;
 
@@ -13,7 +13,7 @@ import java.util.List;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Тестирование класса для нахождения количества доступных sick days")
-class SickDayRemainResolverTest extends AbstractSpringContext {
+class SickDayRemainResolverTest extends AbstractTest {
     @Autowired
     private SickDayRemainResolver sickDayRemainResolver;
 

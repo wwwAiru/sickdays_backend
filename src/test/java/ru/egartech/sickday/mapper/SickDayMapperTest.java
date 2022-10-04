@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import ru.egartech.sdk.dto.task.deserialization.TaskDto;
 import ru.egartech.sdk.dto.task.deserialization.customfield.field.relationship.RelationshipFieldDto;
-import ru.egartech.sickday.AbstractSpringContext;
+import ru.egartech.sickday.AbstractTest;
 import ru.egartech.sickday.domain.type.SickDayType;
 import ru.egartech.sickday.exception.employee.EmployeeNotFoundException;
 import ru.egartech.sickday.exception.sickday.SickDayDateNotFoundException;
@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("Тестирование маппера")
-class SickDayMapperTest extends AbstractSpringContext {
+class SickDayMapperTest extends AbstractTest {
     @Autowired
     private FieldIdsProperties fieldIdsProperties;
 

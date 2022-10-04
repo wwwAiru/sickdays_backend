@@ -3,14 +3,12 @@ package ru.egartech.sickday.property;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 
 @Data
-@TestPropertySource("classpath:application.yml")
 @ConfigurationProperties(prefix = "file-names")
 @Component
 public class FileNamesProperties {

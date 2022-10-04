@@ -30,10 +30,10 @@ public enum BranchType {
                 .collect(Collectors.toMap(BranchType::getName, Function.identity()));
     }
 
+    @Getter
+    private final String name;
+
     public static BranchType valueOfBranch(@NonNull String name) {
         return BY_NAMES.get(name);
     }
-
-    @Getter
-    private final String name;
 }

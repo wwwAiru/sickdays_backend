@@ -1,6 +1,6 @@
 package ru.egartech.sickday.exception.employee;
 
-public class EmployeeNotFoundException extends EmployeeException{
+public class EmployeeNotFoundException extends EmployeeException {
     public EmployeeNotFoundException() {
         super();
     }

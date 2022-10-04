@@ -9,5 +9,5 @@ import org.springframework.test.context.ActiveProfiles;
         ObjectMapper.class,
 })
 @ActiveProfiles("test")
-public class AbstractSpringContext {
+public class AbstractTest {
 }

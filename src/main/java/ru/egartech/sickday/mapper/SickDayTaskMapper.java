@@ -41,21 +41,21 @@ public class SickDayTaskMapper implements DtoMapper<SickDayTaskDto, TaskDto> {
 
     private TaskDto buildTaskDto(SickDayTaskDto sickDayTaskDto) {
         List<AssignerDto> assignerDtos = sickDayTaskDto.getAssigners()
-                .stream()
-                .map(e -> AssignerDto.builder().id(sickDayTaskDto.getId()).build())
-                .toList();
+                                                       .stream()
+                                                       .map(e -> AssignerDto.builder().id(sickDayTaskDto.getId()).build())
+                                                       .toList();
 
         StatusDto statusDto = StatusDto.builder()
-                .status(sickDayTaskDto.getStatus())
-                .build();
+                                       .status(sickDayTaskDto.getStatus())
+                                       .build();
 
         return TaskDto.builder()
-                .id(sickDayTaskDto.getId())
-                .name(sickDayTaskDto.getName())
-                .assigners(assignerDtos)
-                .status(statusDto)
-                .customFields(getSickDayTaskDtoShortCustomFields(sickDayTaskDto))
-                .build();
+                      .id(sickDayTaskDto.getId())
+                      .name(sickDayTaskDto.getName())
+                      .assigners(assignerDtos)
+                      .status(statusDto)
+                      .customFields(getSickDayTaskDtoShortCustomFields(sickDayTaskDto))
+                      .build();
     }
 
     private Map<String, CustomField<?>> getSickDayTaskDtoShortCustomFields(SickDayTaskDto sickDayTaskDto) {
@@ -71,54 +71,54 @@ public class SickDayTaskMapper implements DtoMapper<SickDayTaskDto, TaskDto> {
 
     private TextFieldDto getStartDate(SickDayTaskDto sickDayTaskDto) {
         return TextFieldDto.builder()
-                .id(fieldIdsProperties.getStartDateId())
-                .value(sickDayTaskDto.getStartDate())
-                .build();
+                           .id(fieldIdsProperties.getStartDateId())
+                           .value(sickDayTaskDto.getStartDate())
+                           .build();
     }
 
     private TextFieldDto getEndDate(SickDayTaskDto sickDayTaskDto) {
         return TextFieldDto.builder()
-                .id(fieldIdsProperties.getEndDateId())
-                .value(sickDayTaskDto.getEndDate())
-                .build();
+                           .id(fieldIdsProperties.getEndDateId())
+                           .value(sickDayTaskDto.getEndDate())
+                           .build();
     }
 
     private DropdownFieldDto getSickDayType(SickDayTaskDto sickDayTaskDto) {
         DropdownTypeConfig dropdownTypeConfig = DropdownTypeConfig.builder()
-                .labelOptions(
-                        Arrays.stream(SickDayType.values())
-                                .map(e -> DropdownOption.builder()
-                                        .name(e.getAsString())
-                                        .orderIndex(e.getOrderindex())
-                                        .build()
-                                )
-                                .toList()
-                ).build();
+                                                                  .labelOptions(
+                                                                          Arrays.stream(SickDayType.values())
+                                                                                .map(e -> DropdownOption.builder()
+                                                                                                        .name(e.getAsString())
+                                                                                                        .orderIndex(e.getOrderindex())
+                                                                                                        .build()
+                                                                                )
+                                                                                .toList()
+                                                                  ).build();
 
         DropdownOption dropdownOption = DropdownOption.builder()
-                .name(SickDayType.valueOf(sickDayTaskDto.getType()).getAsString())
-                .orderIndex(SickDayType.valueOf(sickDayTaskDto.getType()).getOrderindex())
-                .build();
+                                                      .name(SickDayType.valueOf(sickDayTaskDto.getType()).getAsString())
+                                                      .orderIndex(SickDayType.valueOf(sickDayTaskDto.getType()).getOrderindex())
+                                                      .build();
 
         return DropdownFieldDto.builder()
-                .dropdownTypeConfig(dropdownTypeConfig)
-                .id(fieldIdsProperties.getSickDaysType())
-                .name(SickDayType.valueOf(sickDayTaskDto.getType()).getAsString())
-                .value(dropdownOption)
-                .build();
+                               .dropdownTypeConfig(dropdownTypeConfig)
+                               .id(fieldIdsProperties.getSickDaysType())
+                               .name(SickDayType.valueOf(sickDayTaskDto.getType()).getAsString())
+                               .value(dropdownOption)
+                               .build();
     }
 
     private RelationshipFieldDto getSickDays(List<SickDayTaskDto> sickDayTaskDtos) {
         List<RelationshipValueDto> relationshipValueDtos = sickDayTaskDtos
                 .stream()
                 .map(e -> RelationshipValueDto.builder()
-                        .id(e.getId())
-                        .build())
+                                              .id(e.getId())
+                                              .build())
                 .toList();
 
         return RelationshipFieldDto.builder()
-                .id(fieldIdsProperties.getSickDaysId())
-                .value(relationshipValueDtos)
-                .build();
+                                   .id(fieldIdsProperties.getSickDaysId())
+                                   .value(relationshipValueDtos)
+                                   .build();
     }
 }
