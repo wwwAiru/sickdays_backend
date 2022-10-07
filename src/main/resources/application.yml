@@ -8,5 +8,7 @@ spring:
   cloud:
     config:
       fail-fast: true
+      retry:
+        initial-interval: 5000
   jackson:
     default-property-inclusion: non_null
