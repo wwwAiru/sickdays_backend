@@ -28,17 +28,6 @@
         <swagger-codegen.version>0.0.1-SNAPSHOT</swagger-codegen.version>
     </properties>
 
-    <distributionManagement>
-        <repository>
-            <id>nexus</id>
-            <url>http://localhost:8081/repository/maven-releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>nexus</id>
-            <url>http://localhost:8081/repository/maven-snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
-
     <profiles>
         <profile>
             <id>dev</id>
